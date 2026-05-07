@@ -1,6 +1,6 @@
 # Informe — Diciembre 2025
 
-_Generado el 2026-05-07 13:03_
+_Generado el 2026-05-07 13:34_
 
 ## KPI principal del mes
 - **Interacciones totales (CMP):** 139 (▲ 414.8%)

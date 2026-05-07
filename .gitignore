@@ -21,3 +21,6 @@ public/
 # Borradores temporales
 *.tmp
 *.bak
+
+# Binarios locales
+.tools/

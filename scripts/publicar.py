@@ -98,6 +98,11 @@ def main():
     )
     (PUBLIC / "index.html").write_text(html, encoding="utf-8")
 
+    # robots.txt — pide a los buscadores que NO indexen el sitio
+    (PUBLIC / "robots.txt").write_text(
+        "User-agent: *\nDisallow: /\n", encoding="utf-8"
+    )
+
     print(f"OK · {len(meses_meta)} mes(es) publicados en {PUBLIC.relative_to(ROOT)}/")
     for m in meses_meta:
         print(f"   · {m['id']}/index.html · {m['label']}")

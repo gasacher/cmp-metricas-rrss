@@ -1,6 +1,6 @@
 # Informe — Enero 2026
 
-_Generado el 2026-05-07 13:03_
+_Generado el 2026-05-07 13:34_
 
 ## KPI principal del mes
 - **Interacciones totales (CMP):** 62 (▼ 55.4%)
