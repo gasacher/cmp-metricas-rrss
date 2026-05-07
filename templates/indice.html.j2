@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reportes mensuales — Cámara de Medios de Pago</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --verde-lima: #B7E04D;
+    --verde-cmp: #2DAA9E;
+    --verde-cmp-osc: #1b6e66;
+    --gris-claro: #f1f5f9;
+    --gris-medio: #cbd5e1;
+    --gris-text: #475569;
+  }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #0f172a;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%);
+    min-height: 100vh;
+  }
+  header {
+    background: white;
+    padding: 32px 40px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  header .info { display: flex; align-items: center; gap: 20px; }
+  header img { width: 220px; }
+  header .text h1 { font-size: 26px; font-weight: 800; color: #0f172a; }
+  header .text p { font-size: 15px; color: var(--gris-text); margin-top: 4px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+  h2 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .lead { font-size: 19px; color: var(--gris-text); margin-bottom: 40px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(15,23,42,0.06);
+    border: 1px solid var(--gris-medio);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(45,170,158,0.15);
+    border-color: var(--verde-cmp);
+  }
+  .card .badge {
+    display: inline-block;
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: fit-content;
+    margin-bottom: 4px;
+  }
+  .card .month { font-size: 32px; font-weight: 900; line-height: 1; }
+  .card .stats { font-size: 14px; color: var(--gris-text); margin-top: 12px; line-height: 1.6; }
+  .card .stats b { color: #0f172a; }
+  .card .arrow { margin-top: 16px; color: var(--verde-cmp); font-weight: 700; font-size: 14px; }
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--gris-text);
+    font-size: 13px;
+  }
+  .empty {
+    text-align: center;
+    padding: 60px 24px;
+    background: white;
+    border-radius: 16px;
+    color: var(--gris-text);
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="info">
+    <img src="{{ logo_uri }}" alt="Cámara de Medios de Pago">
+    <div class="text">
+      <h1>Reportes mensuales de RRSS</h1>
+      <p>Cámara de Medios de Pago · Métricas y análisis</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2>Informes</h2>
+  <p class="lead">Seleccioná el mes que querés revisar.</p>
+
+  {% if meses %}
+  <div class="grid">
+    {% for m in meses %}
+    <a class="card" href="{{ m.id }}/index.html">
+      <span class="badge">{{ m.id }}</span>
+      <div class="month">{{ m.label }}</div>
+      <div class="stats">
+        {% if m.interacciones is not none %}
+        <div><b>{{ m.interacciones }}</b> interacciones · <b>{{ m.seguidores }}</b> seguidores</div>
+        {% endif %}
+        {% if m.web_clics is not none %}
+        <div><b>{{ m.web_clics }}</b> clics web · <b>{{ m.whatsapp_grupos }}</b> grupos WhatsApp</div>
+        {% endif %}
+      </div>
+      <div class="arrow">Ver informe →</div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No hay informes generados todavía.</div>
+  {% endif %}
+</main>
+
+<footer>
+  Generado automáticamente · {{ generated_at }}
+</footer>
+</body>
+</html>

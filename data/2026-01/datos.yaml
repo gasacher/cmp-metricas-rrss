@@ -1,0 +1,162 @@
+# =============================================================================
+# Datos del mes - Enero 2026
+# =============================================================================
+
+mes: "2026-01"
+mes_label: "Enero 2026"
+mes_anterior: "2025-12"
+mes_anterior_label: "Diciembre 2025"
+
+# -----------------------------------------------------------------------------
+# Slide - Contenidos: Datos destacados (LinkedIn CMP)
+# Métrica DESTACADA: interacciones
+# -----------------------------------------------------------------------------
+contenidos:
+  rango_anterior: "1/12/2025 – 31/12/2025"
+  rango_actual:   "1/1/2026 – 31/1/2026"
+  anterior:
+    reacciones: 133
+    comentarios: 2
+    compartidos: 4
+    guardados: 0
+    envios: 0
+  actual:
+    reacciones: 59
+    comentarios: 2
+    compartidos: 1
+    guardados: 0
+    envios: 0
+
+# -----------------------------------------------------------------------------
+# Slide - Publicación con mejor rendimiento (Enero - Agenda Comisiones)
+# -----------------------------------------------------------------------------
+publicacion_top:
+  descripcion: >
+    Agenda de comisiones de la semana próxima — reuniones de la Comisión de
+    Adquirencia (20/4) y de la Comisión de Asuntos Públicos y Relaciones
+    Institucionales (21/4). Invitación a socios para participar y aportar.
+  alcance:
+    miembros_alcanzados: 118
+  actividad:
+    visualizaciones_pagina: 1
+    seguidores_obtenidos: 0
+  interaccion:
+    interacciones: 6
+    tasa_interaccion_pct: 3.1
+    clics: 4
+    porcentaje_clics_pct: 2.1
+    reacciones: 1
+    comentarios: 0
+    veces_compartido: 1
+    guardados: 0
+    envios: 0
+
+# -----------------------------------------------------------------------------
+# Slide - Seguidores CMP
+# Métrica DESTACADA: nuevos seguidores
+# -----------------------------------------------------------------------------
+seguidores:
+  anterior:
+    total: 1030
+    nuevos: 64
+  actual:
+    total: 1215
+    nuevos: 85
+
+# -----------------------------------------------------------------------------
+# Slide - Visitantes de la página CMP
+# Métrica DESTACADA: visitantes únicos
+# -----------------------------------------------------------------------------
+visitantes_pagina:
+  anterior:
+    visualizaciones: 117
+    visitantes_unicos: 54
+    clics_boton: 0
+  actual:
+    visualizaciones: 120
+    visitantes_unicos: 54
+    clics_boton: 0
+
+# -----------------------------------------------------------------------------
+# Slide - YouTube
+# -----------------------------------------------------------------------------
+youtube:
+  anterior:
+    vistas: 2
+    suscriptores_total: 4
+    suscriptores_nuevos: 0
+    tiempo_reproduccion_hrs: 0.3
+    duracion_promedio_seg: 603
+    ctr_pct: 20.0
+  actual:
+    vistas: 3
+    suscriptores_total: 5
+    suscriptores_nuevos: 1
+    tiempo_reproduccion_hrs: 0.0
+    duracion_promedio_seg: 7         # 0:07
+    ctr_pct: 10.0
+
+# -----------------------------------------------------------------------------
+# Slide - Luciana Ríos (perfil personal)
+# Métrica DESTACADA: interacciones sociales
+# -----------------------------------------------------------------------------
+luciana:
+  perfil:
+    nombre: "Luciana Ríos"
+    cargo: "Directora Ejecutiva — Cámara de Medios de Pago"
+  seguidores:
+    anterior:
+      total: 2007
+      nuevos: 57
+    actual:
+      total: 2007       # según captura, mismo total — preguntar a Luciana si es correcto
+      nuevos: 48        # del gráfico acumulado enero
+  interaccion:
+    anterior:
+      sociales_total: 103
+      reacciones: 98
+      comentarios: 5
+      compartidos: 0
+      guardados: 0
+      envios: 0
+      visitas_enlace: 3
+    actual:
+      sociales_total: 7   # 4+3+0 de los top posts; ajustar si hay total real
+      reacciones: 0       # no se publicó captura del bloque "Interacción" de enero
+      comentarios: 0
+      compartidos: 0
+      guardados: 0
+      envios: 0
+      visitas_enlace: 0
+  publicaciones_top:
+    - { texto: "Gracias a Fortuna por invitarme a compartir una mirada sobre el ecosistema de medios de pago", interacciones: 4 }
+    - { texto: "Gran cierre de año junto a la comunidad de la Cámara de Medios de Pago", interacciones: 3 }
+    - { texto: "Ayer marcamos un hito para la CMP con la presentación de nuestra nueva identidad institucional", interacciones: 0 }
+
+# -----------------------------------------------------------------------------
+# Slide - WhatsApp (mismo que diciembre)
+# -----------------------------------------------------------------------------
+whatsapp:
+  grupos:
+    - { nombre: "Regulación, Cumplimiento y Defensa del Consumidor", miembros: 39 }
+    - { nombre: "Asuntos Públicos y Relaciones Institucionales",     miembros: 28 }
+    - { nombre: "Adquirentes",                                       miembros: 35 }
+    - { nombre: "Impuestos",                                         miembros: 38 }
+
+# -----------------------------------------------------------------------------
+# Slide - Web (Search Console)
+# Métrica DESTACADA: clics
+# -----------------------------------------------------------------------------
+web:
+  resumen_semanal:
+    clics_totales: 75
+    ctr_pct: 19.8
+    posicion_media: 11
+  search_console:
+    clics: 75
+    clics_var_pct: 32      # 75 vs 57
+  contenido_top:
+    - { titulo: "[Pendiente — captura de Search Console > Tu contenido]", url: "", clics: 0, var_pct: null }
+
+conclusiones: []
+oportunidades: []

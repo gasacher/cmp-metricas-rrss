@@ -1,0 +1,34 @@
+{
+  "2025-12": {
+    "label": "Diciembre 2025",
+    "interacciones_total": 139,
+    "seguidores": {
+      "total": 1030,
+      "nuevos": 64
+    },
+    "web_clics": 57,
+    "whatsapp_grupos": 4,
+    "whatsapp_miembros": 140,
+    "visitantes_unicos": 54,
+    "youtube_vistas": 2,
+    "youtube_suscriptores": 4,
+    "luciana_seguidores": 2007,
+    "luciana_interacciones": 103
+  },
+  "2026-01": {
+    "label": "Enero 2026",
+    "interacciones_total": 62,
+    "seguidores": {
+      "total": 1215,
+      "nuevos": 85
+    },
+    "web_clics": 75,
+    "whatsapp_grupos": 4,
+    "whatsapp_miembros": 140,
+    "visitantes_unicos": 54,
+    "youtube_vistas": 3,
+    "youtube_suscriptores": 5,
+    "luciana_seguidores": 2007,
+    "luciana_interacciones": 7
+  }
+}

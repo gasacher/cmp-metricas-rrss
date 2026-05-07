@@ -1,0 +1,23 @@
+# Entorno Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# OSX
+.DS_Store
+
+# Cursor / IDE
+.cursor/
+.vscode/
+
+# Archivos pesados que no van al repo (>50 MB)
+plantilla/*.psd
+plantilla/*.pdf
+
+# Carpeta vieja (renombramos a docs/)
+public/
+
+# Borradores temporales
+*.tmp
+*.bak

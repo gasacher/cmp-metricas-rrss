@@ -1,0 +1,157 @@
+# =============================================================================
+# Datos del mes - Diciembre 2025
+# Fuente de verdad del informe del mes.
+# =============================================================================
+
+mes: "2025-12"
+mes_label: "Diciembre 2025"
+mes_anterior: "2025-11"
+mes_anterior_label: "Noviembre 2025"
+
+# -----------------------------------------------------------------------------
+# Slide - Contenidos: Datos destacados (LinkedIn CMP)
+# Métrica DESTACADA: interacciones (reacciones + comentarios + compartidos)
+# -----------------------------------------------------------------------------
+contenidos:
+  rango_anterior: "1/11/2025 – 30/11/2025"
+  rango_actual:   "1/12/2025 – 31/12/2025"
+  anterior:
+    reacciones: 26
+    comentarios: 0
+    compartidos: 1
+    guardados: 0
+    envios: 0
+  actual:
+    reacciones: 133
+    comentarios: 2
+    compartidos: 4
+    guardados: 0
+    envios: 0
+
+# -----------------------------------------------------------------------------
+# Slide - Publicación con mejor rendimiento
+# -----------------------------------------------------------------------------
+publicacion_top:
+  descripcion: >
+    Cocktail de Fin de Año - Cámara de Medios de Pago. Reunión con socios,
+    referentes de Comisiones Técnicas, Consejo Directivo y equipo.
+  alcance:
+    miembros_alcanzados: 1520
+  actividad:
+    visualizaciones_pagina: 24
+    seguidores_obtenidos: 23
+  interaccion:
+    interacciones: 2864
+    tasa_interaccion_pct: 69.2
+    clics: 2800
+    porcentaje_clics_pct: 67.6
+    reacciones: 58
+    comentarios: 0
+    veces_compartido: 6
+    guardados: 0
+    envios: 0
+
+# -----------------------------------------------------------------------------
+# Slide - Seguidores CMP
+# Métrica DESTACADA: nuevos seguidores
+# -----------------------------------------------------------------------------
+seguidores:
+  anterior:
+    total: 1030
+    nuevos: 45
+  actual:
+    total: 1030
+    nuevos: 64
+
+# -----------------------------------------------------------------------------
+# Slide - Visitantes de la página CMP
+# Métrica DESTACADA: visitantes únicos
+# -----------------------------------------------------------------------------
+visitantes_pagina:
+  anterior:
+    visualizaciones: 75
+    visitantes_unicos: 34
+    clics_boton: 0
+  actual:
+    visualizaciones: 117
+    visitantes_unicos: 54
+    clics_boton: 0
+
+# -----------------------------------------------------------------------------
+# Slide - YouTube
+# Métrica DESTACADA: vistas (no se reportan impresiones de video)
+# -----------------------------------------------------------------------------
+youtube:
+  anterior: null   # primera vez que se reporta
+  actual:
+    vistas: 2
+    suscriptores_total: 4
+    suscriptores_nuevos: 0
+    tiempo_reproduccion_hrs: 0.3
+    duracion_promedio_seg: 603        # 10:03 min
+    ctr_pct: 20.0
+
+# -----------------------------------------------------------------------------
+# Slide - Luciana Ríos (Directora Ejecutiva CMP) - Perfil personal
+# Métrica DESTACADA: interacciones sociales
+# -----------------------------------------------------------------------------
+luciana:
+  perfil:
+    nombre: "Luciana Ríos"
+    cargo: "Directora Ejecutiva — Cámara de Medios de Pago"
+  seguidores:
+    anterior:
+      total: 1950        # estimado, sin captura del mes anterior
+      nuevos: 50
+    actual:
+      total: 2007
+      nuevos: 57         # del gráfico acumulado dic
+  interaccion:
+    anterior: null
+    actual:
+      sociales_total: 103
+      reacciones: 98
+      comentarios: 5
+      compartidos: 0
+      guardados: 0
+      envios: 0
+      visitas_enlace: 3
+  publicaciones_top:
+    - { texto: "Gracias a Fortuna por invitarme a compartir una mirada sobre el ecosistema de medios de pago en Argentina", interacciones: 55 }
+    - { texto: "Gran cierre de año junto a la comunidad de la Cámara de Medios de Pago", interacciones: 26 }
+    - { texto: "La semana pasada tuve el placer de participar del Coffee & Trends organizado por Global Processing", interacciones: 23 }
+
+# -----------------------------------------------------------------------------
+# Slide - WhatsApp
+# -----------------------------------------------------------------------------
+whatsapp:
+  grupos:
+    - { nombre: "Regulación, Cumplimiento y Defensa del Consumidor", miembros: 39 }
+    - { nombre: "Asuntos Públicos y Relaciones Institucionales",     miembros: 28 }
+    - { nombre: "Adquirentes",                                       miembros: 35 }
+    - { nombre: "Impuestos",                                         miembros: 38 }
+
+# -----------------------------------------------------------------------------
+# Slide - Web (Search Console)
+# Métrica DESTACADA: clics
+# -----------------------------------------------------------------------------
+web:
+  resumen_semanal:
+    clics_totales: 57
+    ctr_pct: 21.2
+    posicion_media: 7.7
+  search_console:
+    clics: 64
+    clics_var_pct: 19
+  contenido_top:
+    - { titulo: "Cámara de Medios de Pago - Página principal", url: "https://camarademediosdepago.ar/",                       var_pct: 24,  clics: 52 }
+    - { titulo: "Miembros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/miembros/",              var_pct: 150, clics: 5 }
+    - { titulo: "Nosotros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/nosotros/",              var_pct: -29, clics: 5 }
+    - { titulo: "Actividades e Iniciativas",                   url: "https://camarademediosdepago.ar/actividadeseiniciativas/", var_pct: null, clics: 2, nota: "Anteriormente: 0" }
+    - { titulo: "Sala de Prensa",                              url: "https://camarademediosdepago.ar/saladeprensa/",          var_pct: null, clics: 1, nota: "Anteriormente: 0" }
+
+# -----------------------------------------------------------------------------
+# Borradores (vacíos → el script los genera)
+# -----------------------------------------------------------------------------
+conclusiones: []
+oportunidades: []

@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Reporte métricas RRSS — {{ d.mes_label }}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* Fuerza a imprimir colores de fondo y gradientes */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  html, body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #0f172a;
+    background: #e2e8f0;
+  }
+
+  :root {
+    --verde-lima: #B7E04D;
+    --verde-cmp: #2DAA9E;
+    --verde-cmp-osc: #1b6e66;
+    --gris-claro: #f1f5f9;
+    --gris-medio: #cbd5e1;
+    --gris-text: #475569;
+    --rojo: #dc2626;
+    --verde-up: #16a34a;
+    --amarillo: #fbbf24;
+    --azul: #6366f1;
+    --violeta: #a855f7;
+    --naranja: #f59e0b;
+    --rojo-yt: #ff0000;
+  }
+
+  /* ===== Slide 16:9 escalable a cualquier pantalla ===== */
+  .slide-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 1600px;
+    margin: 28px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+  }
+  .slide {
+    width: 1920px;
+    height: 1080px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    padding: 70px 90px;
+    transform-origin: top left;
+    page-break-after: always;
+  }
+  .slide:last-child { page-break-after: auto; }
+  .slide::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 28px;
+    background: var(--verde-lima);
+  }
+
+  .logo {
+    position: absolute;
+    top: 60px;
+    right: 90px;
+    width: 320px;
+  }
+  .logo img { width: 100%; display: block; }
+
+  /* ===== Tipografía base ===== */
+  h1.title-xl {
+    font-size: 132px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+  h2.title-lg {
+    font-size: 88px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+  .subtitle {
+    font-size: 32px;
+    font-weight: 300;
+    color: #1e293b;
+    margin-top: 12px;
+  }
+
+  /* ===== Tag "KPI principal" ===== */
+  .kpi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .kpi-badge::before { content: "★"; }
+
+  /* ===== Slide 1 - Portada ===== */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+  .cover .title-xl { font-size: 156px; }
+  .cover .logo-cover {
+    margin-top: 60px;
+    width: 380px;
+  }
+  .cover .deco {
+    position: absolute;
+    right: -80px; top: 0; bottom: 0;
+    width: 50%;
+    background: linear-gradient(135deg, var(--verde-lima) 0%, var(--verde-cmp) 100%);
+    border-radius: 50% 0 0 50%;
+    opacity: 0.92;
+  }
+
+  /* ===== Glosario ===== */
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 60px;
+    margin-top: 30px;
+  }
+  .gloss-item {
+    border-left: 6px solid var(--verde-cmp);
+    padding: 6px 18px;
+  }
+  .gloss-item .term {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+  }
+  .gloss-item .def {
+    font-size: 20px;
+    color: #1e293b;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  /* ===== KPI principal destacado (la estrella) ===== */
+  .hero-kpi {
+    background: linear-gradient(135deg, #B7E04D 0%, #2DAA9E 100%);
+    /* Color sólido como respaldo si el navegador no imprime gradientes */
+    background-color: #2DAA9E;
+    color: white;
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(45, 170, 158, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .hero-kpi .left { flex: 1; }
+  .hero-kpi .label {
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.95;
+  }
+  .hero-kpi .value {
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 1;
+    margin-top: 8px;
+    letter-spacing: -3px;
+  }
+  .hero-kpi .delta {
+    font-size: 36px;
+    font-weight: 800;
+    margin-top: 8px;
+  }
+  .hero-kpi .right {
+    text-align: right;
+    opacity: 0.95;
+  }
+  .hero-kpi .right .compare-label { font-size: 16px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+  .hero-kpi .right .compare-value { font-size: 56px; font-weight: 700; }
+
+  /* ===== KPIs secundarios (chips) ===== */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 24px 0;
+  }
+  .kpi {
+    background: var(--gris-claro);
+    border-left: 6px solid var(--verde-cmp);
+    padding: 18px 22px;
+    border-radius: 10px;
+  }
+  .kpi .label {
+    font-size: 18px;
+    color: var(--gris-text);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .kpi .value {
+    font-size: 48px;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+  .kpi .delta { font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+  .delta.up   { color: var(--verde-up); }
+  .delta.down { color: var(--rojo); }
+  .delta.flat { color: var(--gris-text); }
+  /* Sobre fondo de color (hero-kpi) las flechas se ven blancas */
+  .hero-kpi .delta.up   { color: white; }
+  .hero-kpi .delta.down { color: #fee2e2; }
+  .hero-kpi .delta.flat { color: rgba(255,255,255,0.85); }
+
+  /* ===== Comparativa anterior vs actual (sin hero) ===== */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .compare .col {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .compare .col h3 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .compare .col .range { font-size: 16px; color: var(--gris-text); margin-bottom: 14px; }
+  .compare .col .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .compare .col .stat .v { font-size: 34px; font-weight: 900; }
+  .compare .col .stat .l { font-size: 14px; color: var(--gris-text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .compare .col .img-wrap {
+    background: white;
+    border: 1px solid var(--gris-medio);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 280px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .compare .col .img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+  .compare .col .img-wrap .placeholder { color: var(--gris-medio); font-size: 18px; }
+
+  /* ===== Card genérica ===== */
+  .card {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 22px 26px;
+  }
+  .card h3 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    margin-bottom: 14px;
+  }
+  .card .stats-grid {
+    display: grid;
+    gap: 10px 24px;
+  }
+  .card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gris-medio);
+  }
+  .card .row:last-child { border-bottom: 0; }
+  .card .row .l { font-size: 18px; color: var(--gris-text); }
+  .card .row .v { font-size: 26px; font-weight: 800; color: #0f172a; }
+
+  /* ===== WhatsApp ===== */
+  .wa-banner { text-align: center; font-size: 40px; font-weight: 800; margin: 30px 0 30px; }
+  .wa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .wa-card { background: #0f172a; color: white; border-radius: 12px; padding: 26px 22px; text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; }
+  .wa-card .badge { background: white; color: var(--verde-cmp-osc); border-radius: 50%; width: 100px; height: 100px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; text-align: center; padding: 12px; line-height: 1.1; }
+  .wa-card .name { font-size: 18px; font-weight: 600; line-height: 1.3; margin-top: 14px; }
+  .wa-card .members { font-size: 15px; color: var(--gris-medio); margin-top: 10px; }
+
+  /* ===== Web ===== */
+  .web-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .web-kpi { border-radius: 10px; padding: 18px 22px; color: white; }
+  .web-kpi .l { font-size: 16px; opacity: 0.95; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .web-kpi .v { font-size: 40px; font-weight: 900; margin-top: 4px; }
+  .web-kpi.k1 { background: var(--azul); }
+  .web-kpi.k2 { background: var(--verde-cmp); }
+  .web-kpi.k3 { background: var(--naranja); }
+  .web-list { background: var(--gris-claro); border-radius: 12px; padding: 22px; margin-top: 18px; }
+  .web-list .item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--gris-medio); }
+  .web-list .item:last-child { border-bottom: 0; }
+  .web-list .item .ttl { font-size: 17px; font-weight: 700; }
+  .web-list .item .url { font-size: 12px; color: var(--gris-text); }
+  .web-list .item .clics { font-size: 22px; font-weight: 800; min-width: 70px; text-align: right; }
+  .web-list .item .delta { font-size: 14px; font-weight: 700; min-width: 90px; text-align: right; }
+
+  /* ===== YouTube ===== */
+  .yt-icon {
+    background: var(--rojo-yt);
+    color: white;
+    width: 90px; height: 64px;
+    border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin-right: 16px;
+    vertical-align: middle;
+  }
+  .yt-icon::after { content: "▶"; }
+
+  /* ===== Bullets (conclusiones/oportunidades) ===== */
+  .bullets { margin-top: 24px; }
+  .bullets li {
+    list-style: none;
+    font-size: 26px;
+    line-height: 1.5;
+    padding: 16px 0 16px 56px;
+    position: relative;
+    color: #1e293b;
+  }
+  .bullets li::before {
+    content: "✓";
+    position: absolute;
+    left: 0; top: 14px;
+    width: 36px; height: 36px;
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    border-radius: 6px;
+    font-weight: 900;
+    font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bullets li b { color: #0f172a; }
+
+  /* ===== Cierre ===== */
+  .closing { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
+  .closing h1 {
+    font-size: 200px; font-weight: 900;
+    background: linear-gradient(135deg, var(--verde-lima) 0%, var(--verde-cmp) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .closing img { margin-top: 40px; width: 380px; }
+
+  /* ===== Avatar/Persona ===== */
+  .person {
+    display: flex; align-items: center; gap: 22px; margin-top: 18px;
+  }
+  .person .avatar {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-lima), var(--verde-cmp));
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 900;
+  }
+  .person .info .name { font-size: 32px; font-weight: 800; }
+  .person .info .role { font-size: 18px; color: var(--gris-text); }
+
+  /* ===== Print ===== */
+  @page { size: 1920px 1080px; margin: 0; }
+  @media print {
+    html, body {
+      background: white;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+      /* Asegura que cada slide ocupe una página completa */
+      break-after: page;
+    }
+    .toolbar { display: none !important; }
+  }
+
+  /* ===== Banner de revisión ===== */
+  .review-banner {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #0f172a;
+    color: white;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .review-banner .left { display: flex; align-items: center; gap: 16px; }
+  .review-banner .badge {
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .review-banner .title { font-size: 17px; font-weight: 700; }
+  .review-banner .subtitle { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .review-banner .actions { display: flex; gap: 10px; align-items: center; }
+  .review-banner button {
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    border: 0;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: inherit;
+  }
+  .review-banner button:hover { opacity: 0.9; }
+  .review-banner button.secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .review-banner .count {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-right: 8px;
+  }
+
+  /* ===== Hint de comentarios para mobile ===== */
+  .review-hint {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 12px 32px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #fbbf24;
+  }
+  .review-hint b { color: #78350f; }
+
+  /* ===== Caja de comentarios bajo cada slide ===== */
+  .comment-box {
+    max-width: 1600px;
+    margin: 0 auto 32px auto;
+    background: #fef9c3;
+    border: 2px solid #facc15;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .comment-box .icon {
+    background: #facc15;
+    color: #78350f;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-weight: 900;
+  }
+  .comment-box .body { flex: 1; }
+  .comment-box .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #78350f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .comment-box textarea {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1e293b;
+    resize: vertical;
+    min-height: 50px;
+    outline: none;
+  }
+  .comment-box textarea::placeholder { color: #a16207; opacity: 0.6; }
+  .comment-box .saved {
+    font-size: 11px;
+    color: #16a34a;
+    font-weight: 700;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .comment-box .saved.show { opacity: 1; }
+
+  /* ===== Numerito de slide ===== */
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 50px;
+    font-size: 18px;
+    color: var(--gris-medio);
+    font-weight: 600;
+  }
+
+  /* ===== Print ya definido arriba sigue funcionando ===== */
+  @media print {
+    .review-banner, .review-hint, .comment-box { display: none !important; }
+    .slide-wrap {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      max-width: none !important;
+      margin: 0 !important;
+      width: 1920px !important;
+      height: 1080px !important;
+    }
+    .slide { transform: none !important; }
+    .slide-number { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="review-banner">
+  <div class="left">
+    <span class="badge">Borrador para revisión</span>
+    <div>
+      <div class="title">Reporte métricas RRSS · {{ d.mes_label }}</div>
+      <div class="subtitle">Cámara de Medios de Pago</div>
+    </div>
+  </div>
+  <div class="actions">
+    <span class="count" id="commentCount">0 comentarios</span>
+    <button onclick="exportarComentarios()">Exportar comentarios</button>
+    <button class="secondary" onclick="limpiarComentarios()" title="Limpiar todos los comentarios">×</button>
+  </div>
+</div>
+
+<div class="review-hint">
+  Escribí tus observaciones en el <b>recuadro amarillo</b> que aparece debajo de cada slide. Cuando termines, hacé click en <b>"Exportar comentarios"</b> arriba a la derecha y te abrirá un email con todo listo para enviar.
+</div>
+
+{# ============================================================ Slide - Portada #}
+<section class="slide">
+  <div class="cover">
+    <div class="deco"></div>
+    <h1 class="title-xl">Reporte<br>métricas<br>RRSS</h1>
+    <div class="subtitle">{{ d.mes_label }}</div>
+    <img class="logo-cover" src="{{ logo_uri }}" alt="Cámara de Medios de Pago">
+  </div>
+</section>
+
+{# ============================================================ Slide - Glosario #}
+<section class="slide">
+  <h2 class="title-lg">Glosario</h2>
+  <div class="subtitle">Definiciones de las métricas usadas en este informe</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div class="glosario-grid">
+    <div class="gloss-item">
+      <div class="term">Alcance / Miembros alcanzados</div>
+      <div class="def">Cantidad de personas únicas que vieron una publicación al menos una vez.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Interacciones sociales</div>
+      <div class="def">Suma de reacciones, comentarios, veces compartido, guardados y envíos.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Reacciones</div>
+      <div class="def">Likes, "me gusta" y demás reacciones positivas a una publicación.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Veces compartido</div>
+      <div class="def">Cantidad de veces que un usuario compartió la publicación en su red.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Veces guardado</div>
+      <div class="def">Usuarios que guardaron el contenido para verlo más tarde.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Envíos en LinkedIn</div>
+      <div class="def">Veces que la publicación se compartió por mensaje privado dentro de LinkedIn.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Tasa de interacción</div>
+      <div class="def">Interacciones sobre alcance, expresado en porcentaje. Mide el "engagement".</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Visitantes únicos</div>
+      <div class="def">Personas distintas que visitaron la página de LinkedIn de la Cámara.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">CTR (Search Console / YouTube)</div>
+      <div class="def">Porcentaje de impresiones que se convirtieron en clics o vistas.</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Posición media (Search Console)</div>
+      <div class="def">Posición promedio en los resultados de Google para las búsquedas registradas.</div>
+    </div>
+  </div>
+</section>
+
+{# ============================================================ Slide - Contenidos #}
+<section class="slide">
+  <h2 class="title-lg">Contenidos</h2>
+  <div class="subtitle">{{ d.mes_label }} · LinkedIn — Cámara de Medios de Pago</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Interacciones totales</div>
+        <div class="value">{{ fmt_num(totales.contenidos.actual) }}</div>
+        <div class="delta {{ delta_class(deltas.interacciones_total) }}">{{ delta_str(deltas.interacciones_total) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      <div class="right">
+        <div class="compare-label">{{ d.mes_anterior_label }}</div>
+        <div class="compare-value">{{ fmt_num(totales.contenidos.anterior) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row" style="margin-top: 26px;">
+    <div class="kpi">
+      <div class="label">Reacciones</div>
+      <div class="value">{{ fmt_num(d.contenidos.actual.reacciones) }}</div>
+      <div class="delta {{ delta_class(deltas.rea) }}">{{ delta_str(deltas.rea) }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Comentarios</div>
+      <div class="value">{{ fmt_num(d.contenidos.actual.comentarios) }}</div>
+      <div class="delta {{ delta_class(deltas.com) }}">{{ delta_str(deltas.com) }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Compartidos</div>
+      <div class="value">{{ fmt_num(d.contenidos.actual.compartidos) }}</div>
+      <div class="delta {{ delta_class(deltas.share) }}">{{ delta_str(deltas.share) }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Guardados</div>
+      <div class="value">{{ fmt_num(d.contenidos.actual.guardados) }}</div>
+      <div class="delta flat"></div>
+    </div>
+  </div>
+  <div class="kpi-row" style="grid-template-columns: 1fr; margin-top: 6px;">
+    <div class="kpi">
+      <div class="label">Envíos en LinkedIn</div>
+      <div class="value" style="font-size: 38px;">{{ fmt_num(d.contenidos.actual.envios) }}</div>
+    </div>
+  </div>
+</section>
+
+{# ============================================================ Slide - Publicación top #}
+{% if d.publicacion_top and d.publicacion_top.interaccion.interacciones %}
+<section class="slide">
+  <h2 class="title-lg">Publicación destacada</h2>
+  <div class="subtitle">{{ d.mes_label }} · Contenido con mejor rendimiento</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 24px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px;">
+    <div>
+      <div class="card">
+        <h3>Análisis de la publicación</h3>
+        <div style="font-size: 20px; line-height: 1.4; color: #334155;">{{ d.publicacion_top.descripcion }}</div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>Alcance</h3>
+        <div class="row"><span class="l">Miembros alcanzados</span><span class="v">{{ fmt_num(d.publicacion_top.alcance.miembros_alcanzados) }}</span></div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>Actividad orgánica de la página</h3>
+        <div class="row"><span class="l">Visualizaciones de la página</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.visualizaciones_pagina) }}</span></div>
+        <div class="row"><span class="l">Seguidores obtenidos</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.seguidores_obtenidos) }}</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="kpi-badge">KPI principal</div>
+      <div class="hero-kpi">
+        <div class="left">
+          <div class="label">Interacciones</div>
+          <div class="value">{{ fmt_num(d.publicacion_top.interaccion.interacciones) }}</div>
+          <div class="delta flat">Tasa {{ d.publicacion_top.interaccion.tasa_interaccion_pct }}%</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>Detalle de interacción</h3>
+        <div class="row"><span class="l">Clics</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.clics) }}</span></div>
+        <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.reacciones) }}</span></div>
+        <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.comentarios) }}</span></div>
+        <div class="row"><span class="l">Veces compartido</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.veces_compartido) }}</span></div>
+        <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.guardados) }}</span></div>
+        <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.envios) }}</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============================================================ Slide - Seguidores #}
+<section class="slide">
+  <h2 class="title-lg">Seguidores</h2>
+  <div class="subtitle">{{ d.mes_label }} · Cámara de Medios de Pago</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Nuevos seguidores en el mes</div>
+        <div class="value">{{ fmt_num(d.seguidores.actual.nuevos) }}</div>
+        <div class="delta {{ delta_class(deltas.seguidores_nuevos) }}">{{ delta_str(deltas.seguidores_nuevos) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      <div class="right">
+        <div class="compare-label">{{ d.mes_anterior_label }}</div>
+        <div class="compare-value">{{ fmt_num(d.seguidores.anterior.nuevos) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 30px;">
+    <div class="kpi">
+      <div class="label">Total de seguidores · {{ d.mes_label }}</div>
+      <div class="value">{{ fmt_num(d.seguidores.actual.total) }}</div>
+      <div class="delta {{ delta_class(deltas.seguidores_total) }}">{{ delta_str(deltas.seguidores_total) }} vs {{ d.mes_anterior_label }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total de seguidores · {{ d.mes_anterior_label }}</div>
+      <div class="value">{{ fmt_num(d.seguidores.anterior.total) }}</div>
+    </div>
+  </div>
+
+  <div class="compare" style="margin-top: 24px;">
+    <div class="col">
+      <h3>Captura · {{ d.mes_anterior_label }}</h3>
+      <div class="img-wrap">
+        {% if capturas.seguidores_anterior %}
+          <img src="{{ capturas.seguidores_anterior }}" alt="">
+        {% else %}
+          <div class="placeholder">Captura · seguidores {{ d.mes_anterior_label }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col">
+      <h3>Captura · {{ d.mes_label }}</h3>
+      <div class="img-wrap">
+        {% if capturas.seguidores_actual %}
+          <img src="{{ capturas.seguidores_actual }}" alt="">
+        {% else %}
+          <div class="placeholder">Captura · seguidores {{ d.mes_label }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================================================ Slide - Visitantes #}
+{% if d.visitantes_pagina %}
+<section class="slide">
+  <h2 class="title-lg">Visitantes</h2>
+  <div class="subtitle">{{ d.mes_label }} · Análisis de la página de LinkedIn</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Visitantes únicos</div>
+        <div class="value">{{ fmt_num(d.visitantes_pagina.actual.visitantes_unicos) }}</div>
+        <div class="delta {{ delta_class(deltas.visit_unique) }}">{{ delta_str(deltas.visit_unique) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      <div class="right">
+        <div class="compare-label">{{ d.mes_anterior_label }}</div>
+        <div class="compare-value">{{ fmt_num(d.visitantes_pagina.anterior.visitantes_unicos) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 26px;">
+    <div class="kpi">
+      <div class="label">Visualizaciones de la página</div>
+      <div class="value">{{ fmt_num(d.visitantes_pagina.actual.visualizaciones) }}</div>
+      <div class="delta {{ delta_class(deltas.visit_views) }}">{{ delta_str(deltas.visit_views) }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Clics en botón personalizado</div>
+      <div class="value">{{ fmt_num(d.visitantes_pagina.actual.clics_boton) }}</div>
+    </div>
+  </div>
+
+  <div class="compare" style="margin-top: 20px;">
+    <div class="col">
+      <h3>Captura · {{ d.mes_anterior_label }}</h3>
+      <div class="img-wrap" style="height: 220px;">
+        {% if capturas.visitantes_anterior %}<img src="{{ capturas.visitantes_anterior }}">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+    <div class="col">
+      <h3>Captura · {{ d.mes_label }}</h3>
+      <div class="img-wrap" style="height: 220px;">
+        {% if capturas.visitantes_actual %}<img src="{{ capturas.visitantes_actual }}">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============================================================ Slide - YouTube #}
+{% if d.youtube and d.youtube.actual %}
+<section class="slide">
+  <h2 class="title-lg"><span class="yt-icon"></span>YouTube</h2>
+  <div class="subtitle">{{ d.mes_label }} · Canal de la Cámara de Medios de Pago</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Vistas del canal</div>
+        <div class="value">{{ fmt_num(d.youtube.actual.vistas) }}</div>
+        {% if d.youtube.anterior %}
+        <div class="delta {{ delta_class(deltas.yt_vistas) }}">{{ delta_str(deltas.yt_vistas) }} vs {{ d.mes_anterior_label }}</div>
+        {% else %}
+        <div class="delta flat">Primer mes reportado</div>
+        {% endif %}
+      </div>
+      {% if d.youtube.anterior %}
+      <div class="right">
+        <div class="compare-label">{{ d.mes_anterior_label }}</div>
+        <div class="compare-value">{{ fmt_num(d.youtube.anterior.vistas) }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); margin-top: 26px;">
+    <div class="kpi">
+      <div class="label">Suscriptores totales</div>
+      <div class="value">{{ fmt_num(d.youtube.actual.suscriptores_total) }}</div>
+      {% if d.youtube.actual.suscriptores_nuevos %}
+      <div class="delta up">+{{ d.youtube.actual.suscriptores_nuevos }} en el mes</div>
+      {% endif %}
+    </div>
+    <div class="kpi">
+      <div class="label">Tiempo de reproducción (hs)</div>
+      <div class="value">{{ d.youtube.actual.tiempo_reproduccion_hrs }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">CTR de las impresiones</div>
+      <div class="value">{{ d.youtube.actual.ctr_pct }}%</div>
+    </div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns: 1fr; margin-top: 6px;">
+    <div class="kpi">
+      <div class="label">Duración promedio de visualización</div>
+      <div class="value" style="font-size: 38px;">{{ duracion_str(d.youtube.actual.duracion_promedio_seg) }}</div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============================================================ Slide - Luciana / Perfil #}
+{% if d.luciana %}
+<section class="slide">
+  <h2 class="title-lg">Perfil ejecutivo</h2>
+  <div class="subtitle">{{ d.mes_label }} · {{ d.luciana.perfil.nombre }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div class="person">
+    <div class="avatar">{{ d.luciana.perfil.nombre|first }}</div>
+    <div class="info">
+      <div class="name">{{ d.luciana.perfil.nombre }}</div>
+      <div class="role">{{ d.luciana.perfil.cargo }}</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Nuevos seguidores en el mes</div>
+        <div class="value">{{ fmt_num(d.luciana.seguidores.actual.nuevos) }}</div>
+        {% if d.luciana.seguidores.anterior %}
+        <div class="delta {{ delta_class(deltas.luc_nuevos) }}">{{ delta_str(deltas.luc_nuevos) }} vs {{ d.mes_anterior_label }}</div>
+        {% endif %}
+      </div>
+      {% if d.luciana.seguidores.anterior %}
+      <div class="right">
+        <div class="compare-label">{{ d.mes_anterior_label }}</div>
+        <div class="compare-value">{{ fmt_num(d.luciana.seguidores.anterior.nuevos) }}</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 26px;">
+    <div class="kpi">
+      <div class="label">Total de seguidores</div>
+      <div class="value">{{ fmt_num(d.luciana.seguidores.actual.total) }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Interacciones sociales del mes</div>
+      <div class="value">{{ fmt_num(d.luciana.interaccion.actual.sociales_total) }}</div>
+      {% if d.luciana.interaccion.anterior %}
+      <div class="delta {{ delta_class(deltas.luc_interacciones) }}">{{ delta_str(deltas.luc_interacciones) }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ============================================================ Slide - Luciana / Contenido + Top posts #}
+<section class="slide">
+  <h2 class="title-lg">Perfil — Contenido</h2>
+  <div class="subtitle">{{ d.mes_label }} · Publicaciones de {{ d.luciana.perfil.nombre }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+    <div class="card">
+      <h3>Detalle de interacción</h3>
+      <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.reacciones) }}</span></div>
+      <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.comentarios) }}</span></div>
+      <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.compartidos) }}</span></div>
+      <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.guardados) }}</span></div>
+      <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.envios) }}</span></div>
+      <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.visitas_enlace) }}</span></div>
+    </div>
+    <div>
+      <h3 style="font-size: 24px; color: var(--verde-cmp-osc); margin-bottom: 14px;">Publicaciones con mejor rendimiento</h3>
+      {% for p in d.luciana.publicaciones_top %}
+      <div class="card" style="margin-bottom: 14px; padding: 16px 20px;">
+        <div style="font-size: 17px; line-height: 1.4; margin-bottom: 8px;">{{ p.texto }}</div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 14px; color: var(--gris-text); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Interacciones</span>
+          <span style="font-size: 28px; font-weight: 900; color: var(--verde-cmp-osc);">{{ p.interacciones }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============================================================ Slide - WhatsApp #}
+<section class="slide">
+  <h2 class="title-lg">WhatsApp</h2>
+  <div class="subtitle">{{ d.mes_label }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div class="wa-banner">{{ d.whatsapp.grupos|length }} GRUPOS ACTIVOS · {{ d.whatsapp.grupos|sum(attribute='miembros') }} miembros</div>
+  <div class="wa-grid">
+    {% for g in d.whatsapp.grupos %}
+    <div class="wa-card">
+      <div>
+        <div class="badge">CÁMARA<br>DE MEDIOS<br>DE PAGO</div>
+        <div class="name">{{ g.nombre }}</div>
+      </div>
+      <div class="members">Grupo · {{ g.miembros }} miembros</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ============================================================ Slide - Web #}
+<section class="slide">
+  <h2 class="title-lg">Web</h2>
+  <div class="subtitle">{{ d.mes_label }} · Search Console</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div style="margin-top: 30px;">
+    <div class="kpi-badge">KPI principal</div>
+    <div class="hero-kpi">
+      <div class="left">
+        <div class="label">Clics en buscador</div>
+        <div class="value">{{ fmt_num(d.web.search_console.clics) }}</div>
+        <div class="delta up">▲ {{ d.web.search_console.clics_var_pct }}% vs {{ d.mes_anterior_label }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="web-kpis" style="margin-top: 24px;">
+    <div class="web-kpi k1">
+      <div class="l">Clics totales semana</div>
+      <div class="v">{{ fmt_num(d.web.resumen_semanal.clics_totales) }}</div>
+    </div>
+    <div class="web-kpi k2">
+      <div class="l">CTR medio</div>
+      <div class="v">{{ d.web.resumen_semanal.ctr_pct }}%</div>
+    </div>
+    <div class="web-kpi k3">
+      <div class="l">Posición media</div>
+      <div class="v">{{ d.web.resumen_semanal.posicion_media }}</div>
+    </div>
+  </div>
+
+  <div class="web-list">
+    <h3 style="font-size: 22px; color: var(--verde-cmp-osc); margin-bottom: 12px;">Tu contenido — top URLs</h3>
+    {% for c in d.web.contenido_top %}
+    <div class="item">
+      <div>
+        <div class="ttl">{{ c.titulo }}</div>
+        {% if c.url %}<div class="url">{{ c.url }}</div>{% endif %}
+      </div>
+      <div class="clics">{{ c.clics }}</div>
+      <div class="delta {% if c.var_pct is not none and c.var_pct >= 0 %}up{% elif c.var_pct is not none %}down{% else %}flat{% endif %}">
+        {% if c.var_pct is not none %}
+          {% if c.var_pct >= 0 %}▲{% else %}▼{% endif %} {{ c.var_pct|abs }}%
+        {% elif c.nota %}
+          {{ c.nota }}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ============================================================ Slide - Conclusiones #}
+<section class="slide">
+  <h2 class="title-lg">Conclusiones</h2>
+  <div class="subtitle">{{ d.mes_label }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <ul class="bullets">
+    {% for c in d.conclusiones %}
+    <li>{{ c|safe }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+{# ============================================================ Slide - Oportunidades #}
+<section class="slide">
+  <h2 class="title-lg">Oportunidades</h2>
+  <div class="subtitle">{{ d.mes_label }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <ul class="bullets">
+    {% for o in d.oportunidades %}
+    <li>{{ o|safe }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+{# ============================================================ Slide - Cierre #}
+<section class="slide">
+  <div class="closing">
+    <h1>¡Gracias!</h1>
+    <img src="{{ logo_uri }}" alt="">
+  </div>
+</section>
+
+<script>
+  /* =========================================================================
+   * Identificador del informe — usado para que cada mes tenga sus propios
+   * comentarios persistidos en localStorage independientes.
+   * ========================================================================= */
+  const REPORT_ID = "{{ d.mes }}";
+  const REPORT_LABEL = "{{ d.mes_label }}";
+  const STORAGE_KEY = `cmp-comentarios-${REPORT_ID}`;
+
+  /* =========================================================================
+   * Wrap slides + agrega caja de comentarios + numera
+   * ========================================================================= */
+  (function () {
+    const slides = Array.from(document.querySelectorAll('section.slide'));
+    const titulos = [];   // título visible de cada slide para el email
+
+    slides.forEach((slide, idx) => {
+      const slideNumber = idx + 1;
+
+      // Título: tomamos h1 o h2 del slide
+      const heading = slide.querySelector('h1, h2');
+      const titulo = heading ? heading.textContent.trim().replace(/\s+/g, ' ') : `Slide ${slideNumber}`;
+      titulos.push(titulo);
+
+      // Numerar (excepto la portada)
+      if (idx > 0) {
+        const num = document.createElement('div');
+        num.className = 'slide-number';
+        num.textContent = `${slideNumber} / ${slides.length}`;
+        slide.appendChild(num);
+      }
+
+      // Wrap del slide
+      const wrap = document.createElement('div');
+      wrap.className = 'slide-wrap';
+      slide.parentNode.insertBefore(wrap, slide);
+      wrap.appendChild(slide);
+
+      // Caja de comentarios (no en la portada ni en "Gracias")
+      const esPortada = idx === 0;
+      const esCierre = idx === slides.length - 1;
+      if (!esPortada && !esCierre) {
+        const cb = document.createElement('div');
+        cb.className = 'comment-box';
+        cb.innerHTML = `
+          <div class="icon">${slideNumber}</div>
+          <div class="body">
+            <div class="label">Comentarios — Slide ${slideNumber}: ${titulo}</div>
+            <textarea data-slide="${slideNumber}" data-titulo="${titulo.replace(/"/g, '&quot;')}"
+              placeholder="Escribí acá tus observaciones sobre este slide…"></textarea>
+            <div class="saved">✓ Guardado</div>
+          </div>
+        `;
+        wrap.parentNode.insertBefore(cb, wrap.nextSibling);
+      }
+    });
+    window._reportTitulos = titulos;
+
+    /* ===== Persistencia con localStorage ===== */
+    function cargarComentarios() {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        document.querySelectorAll('.comment-box textarea').forEach(t => {
+          const num = t.dataset.slide;
+          if (data[num]) t.value = data[num];
+        });
+        actualizarContador();
+      } catch (e) {}
+    }
+    function guardarComentarios(showSaved = false) {
+      const data = {};
+      document.querySelectorAll('.comment-box textarea').forEach(t => {
+        const num = t.dataset.slide;
+        if (t.value.trim()) data[num] = t.value;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      actualizarContador();
+      if (showSaved) {
+        document.querySelectorAll('.comment-box .saved').forEach(s => {
+          s.classList.add('show');
+          setTimeout(() => s.classList.remove('show'), 1200);
+        });
+      }
+    }
+    function actualizarContador() {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const n = Object.keys(data).length;
+      const el = document.getElementById('commentCount');
+      if (el) el.textContent = `${n} comentario${n === 1 ? '' : 's'}`;
+    }
+
+    let saveTimer;
+    document.addEventListener('input', e => {
+      if (e.target.matches('.comment-box textarea')) {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => guardarComentarios(true), 400);
+      }
+    });
+
+    /* ===== Exportar comentarios ===== */
+    window.exportarComentarios = function () {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const numeros = Object.keys(data).map(Number).sort((a,b) => a-b);
+      if (numeros.length === 0) {
+        alert('Todavía no hay comentarios cargados. Escribí tus observaciones en los recuadros amarillos debajo de cada slide.');
+        return;
+      }
+      const lineas = [`Comentarios sobre el reporte — ${REPORT_LABEL}`, ''];
+      numeros.forEach(num => {
+        const t = document.querySelector(`textarea[data-slide="${num}"]`);
+        const titulo = t ? t.dataset.titulo : '';
+        lineas.push(`──── Slide ${num} · ${titulo} ────`);
+        lineas.push(data[num].trim());
+        lineas.push('');
+      });
+      const cuerpo = lineas.join('\n');
+      const subject = encodeURIComponent(`Comentarios reporte CMP ${REPORT_LABEL}`);
+      const body = encodeURIComponent(cuerpo);
+      // Abre el cliente de email
+      const mailto = `mailto:?subject=${subject}&body=${body}`;
+      window.location.href = mailto;
+      // Y como respaldo, copia al portapapeles
+      navigator.clipboard?.writeText(cuerpo).catch(()=>{});
+    };
+
+    window.limpiarComentarios = function () {
+      if (!confirm('¿Borrar todos los comentarios cargados? Esta acción no se puede deshacer.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.comment-box textarea').forEach(t => t.value = '');
+      actualizarContador();
+    };
+
+    /* ===== Escala responsive ===== */
+    function fit() {
+      document.querySelectorAll('.slide-wrap').forEach(w => {
+        const slide = w.querySelector('.slide');
+        if (!slide) return;
+        const wrapW = w.clientWidth;
+        const scale = wrapW / 1920;
+        slide.style.transform = `scale(${scale})`;
+        w.style.height = (1080 * scale) + 'px';
+      });
+    }
+
+    window.addEventListener('load', () => { fit(); cargarComentarios(); });
+    window.addEventListener('resize', fit);
+    fit();
+    cargarComentarios();
+  })();
+</script>
+
+</body>
+</html>
