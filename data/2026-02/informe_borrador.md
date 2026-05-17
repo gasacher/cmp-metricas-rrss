@@ -1,6 +1,6 @@
 # Informe — Febrero 2026
 
-_Generado el 2026-05-16 17:34_
+_Generado el 2026-05-17 16:35_
 
 ## KPI principal del mes
 - **Interacciones totales (CMP):** 118 (▲ 90.3%)
@@ -22,8 +22,8 @@ _Generado el 2026-05-16 17:34_
 - Durante febrero 2026 se registró un <b>crecimiento significativo en interacciones (+90%)</b>, pasando de 62 a <b>118</b>, lo que refleja mayor engagement de la comunidad con el contenido publicado.
 - Si bien el alcance se mantiene, los nuevos seguidores cayeron ▼ 21.2% respecto al mes anterior.
 - La página de LinkedIn registró <b>56 visitantes únicos</b> (▲ 3.7% vs enero 2026).
-- El canal de YouTube acumuló <b>0 vistas</b> y cuenta con 5 suscriptores. Se observa un canal todavía en etapa inicial con margen de crecimiento.
-- El perfil ejecutivo de <b>Luciana Ríos</b> registró 40 interacciones sociales y suma 2026 seguidores.
+- El canal de YouTube registró <b>0 vistas</b> en el mes (dato alineado con YouTube Studio; el detalle de suscriptores y CTR figura en las capturas del informe).
+- El perfil ejecutivo de <b>Luciana Ríos</b> concentró <b>40 interacciones sociales</b> y <b>2.026 seguidores</b> totales (nuevos seguidores del mes: 55). Más allá del volumen, el perfil cumple un rol de <b>vocería y cercanía</b> con socios y stakeholders: conviene explicitar en la agenda qué temas institucionales se potencian desde la cuenta personal frente a la página de la Cámara.
 - En el sitio web los clics desde Google crecieron <b>+24%</b> (93 clics totales), mostrando una correcta articulación entre redes sociales y web.
 
 ## Oportunidades (borrador)

@@ -78,7 +78,7 @@ visitantes_pagina:
     clics_boton: 0
 
 # -----------------------------------------------------------------------------
-# Slide - YouTube
+# Slide - YouTube (vistas en datos; resto en capturas Studio)
 # -----------------------------------------------------------------------------
 youtube:
   anterior:
@@ -99,6 +99,7 @@ youtube:
 # -----------------------------------------------------------------------------
 # Slide - Luciana Ríos (perfil personal)
 # Métrica DESTACADA: interacciones sociales
+# Total seguidores: leer del panel en la captura 08_luciana_perfil_actual (o alias Luciana_enero26.*).
 # -----------------------------------------------------------------------------
 luciana:
   perfil:
@@ -109,8 +110,12 @@ luciana:
       total: 2007
       nuevos: 57
     actual:
-      total: 2007       # según captura, mismo total — preguntar a Luciana si es correcto
-      nuevos: 48        # del gráfico acumulado enero
+      total: 2007
+      nuevos: 48
+      nota_total: >
+        Total de seguidores según el número visible en la captura del perfil
+        de LinkedIn del mes (archivo estándar 08_luciana_perfil_actual o
+        Luciana_enero26 con la misma vista).
   interaccion:
     anterior:
       sociales_total: 103
@@ -120,7 +125,6 @@ luciana:
       guardados: 0
       envios: 0
       visitas_enlace: 3
-    # Panel «Interacción» mes actual (captura 09_luciana_interaccion_actual.png).
     actual:
       sociales_total: 103
       reacciones: 98
@@ -139,8 +143,7 @@ luciana:
 # -----------------------------------------------------------------------------
 whatsapp:
   nota_mes: >
-    Sin actualización de datos de grupos este mes (contacto de la Cámara en
-    vacaciones). Se muestran los últimos valores disponibles.
+    Sin actualización de datos de grupos este mes. Se muestran los últimos valores disponibles.
   grupos:
     - { nombre: "Regulación, Cumplimiento y Defensa del Consumidor", miembros: 39 }
     - { nombre: "Asuntos Públicos y Relaciones Institucionales",     miembros: 28 }
@@ -150,6 +153,7 @@ whatsapp:
 # -----------------------------------------------------------------------------
 # Slide - Web (Search Console)
 # Métrica DESTACADA: clics
+# Variación % por URL: cargar solo si se lee de la vista «Tu contenido» (captura 06_web_contenido).
 # -----------------------------------------------------------------------------
 web:
   resumen_semanal:
@@ -159,16 +163,12 @@ web:
   search_console:
     clics: 75
     clics_var_pct: 32      # 75 vs 57
-  nota_contenido: >
-    La tabla siguiente resume clics por URL según el último informe completo
-    disponible; al recibir la captura «Tu contenido» del mes (06_web_contenido)
-    se puede ajustar cifras y variaciones.
   contenido_top:
-    - { titulo: "Cámara de Medios de Pago - Página principal", url: "https://camarademediosdepago.ar/",                       var_pct: 24,  clics: 52 }
-    - { titulo: "Miembros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/miembros/",              var_pct: 150, clics: 5 }
-    - { titulo: "Nosotros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/nosotros/",              var_pct: -29, clics: 5 }
-    - { titulo: "Actividades e Iniciativas",                   url: "https://camarademediosdepago.ar/actividadeseiniciativas/", var_pct: null, clics: 2, nota: "Anteriormente: 0" }
-    - { titulo: "Sala de Prensa",                              url: "https://camarademediosdepago.ar/saladeprensa/",          var_pct: null, clics: 1, nota: "Anteriormente: 0" }
+    - { titulo: "Cámara de Medios de Pago - Página principal", url: "https://camarademediosdepago.ar/", clics: 52 }
+    - { titulo: "Miembros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/miembros/",              clics: 5 }
+    - { titulo: "Nosotros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/nosotros/",              clics: 5 }
+    - { titulo: "Actividades e Iniciativas",                   url: "https://camarademediosdepago.ar/actividadeseiniciativas/", clics: 2, nota: "Anteriormente: 0" }
+    - { titulo: "Sala de Prensa",                              url: "https://camarademediosdepago.ar/saladeprensa/",          clics: 1, nota: "Anteriormente: 0" }
 
 conclusiones: []
 oportunidades: []

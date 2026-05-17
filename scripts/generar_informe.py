@@ -111,18 +111,35 @@ CAPTURAS_MAP = {
     "web_contenido":                  "06_web_contenido",
 }
 
+# Prefijos alternativos (sin extensión) probados además del nombre estándar.
+CAPTURAS_ALT_PREFIXES: dict[str, list[str]] = {
+    "luciana_perfil_actual": [
+        "Luciana_enero26",
+        "luciana_perfil_enero26",
+    ],
+    "luciana_interaccion_actual": [
+        "interacciones_luciana_enero26",
+        "Interacciones_luciana_enero26",
+    ],
+}
 
-def cargar_capturas(mes_dir: Path) -> dict[str, str]:
-    cap_dir = mes_dir / "capturas"
-    out = {}
-    for key, prefix in CAPTURAS_MAP.items():
+
+def _cargar_captura_por_prefijos(cap_dir: Path, prefixes: list[str]) -> str:
+    for prefix in prefixes:
         for ext in ("png", "PNG", "jpg", "JPG", "jpeg", "JPEG", "webp"):
             p = cap_dir / f"{prefix}.{ext}"
             if p.exists():
-                out[key] = file_to_data_uri(p)
-                break
-        else:
-            out[key] = ""
+                return file_to_data_uri(p)
+    return ""
+
+
+def cargar_capturas(mes_dir: Path) -> dict[str, str]:
+    cap_dir = mes_dir / "capturas"
+    out: dict[str, str] = {}
+    for key, prefix in CAPTURAS_MAP.items():
+        alt = CAPTURAS_ALT_PREFIXES.get(key, [])
+        prefixes = [prefix] + [a for a in alt if a != prefix]
+        out[key] = _cargar_captura_por_prefijos(cap_dir, prefixes)
     return out
 
 
@@ -234,18 +251,31 @@ def sugerir_conclusiones(d: dict, deltas: dict, totales: dict) -> list[str]:
     if d.get("youtube"):
         y = d["youtube"]["actual"]
         sugs.append(
-            f"El canal de YouTube acumuló <b>{y['vistas']} vistas</b> y cuenta "
-            f"con {y['suscriptores_total']} suscriptores. Se observa un canal "
-            f"todavía en etapa inicial con margen de crecimiento."
+            f"El canal de YouTube registró <b>{y['vistas']} vistas</b> en el mes "
+            f"(dato alineado con YouTube Studio; el detalle de suscriptores y "
+            f"CTR figura en las capturas del informe)."
         )
 
     if d.get("luciana"):
         L = d["luciana"]
-        sugs.append(
-            f"El perfil ejecutivo de <b>{L['perfil']['nombre']}</b> registró "
-            f"{L['interaccion']['actual']['sociales_total']} interacciones "
-            f"sociales y suma {L['seguidores']['actual']['total']} seguidores."
+        nombre = L["perfil"]["nombre"]
+        soc = L["interaccion"]["actual"]["sociales_total"]
+        tot = L["seguidores"]["actual"]["total"]
+        nue = L["seguidores"]["actual"].get("nuevos")
+        luc_txt = (
+            f"El perfil ejecutivo de <b>{nombre}</b> concentró "
+            f"<b>{fmt_num(soc)} interacciones sociales</b> y "
+            f"<b>{fmt_num(tot)} seguidores</b> totales"
         )
+        if nue is not None:
+            luc_txt += f" (nuevos seguidores del mes: {fmt_num(nue)})"
+        luc_txt += (
+            ". Más allá del volumen, el perfil cumple un rol de "
+            "<b>vocería y cercanía</b> con socios y stakeholders: conviene "
+            "explicitar en la agenda qué temas institucionales se potencian "
+            "desde la cuenta personal frente a la página de la Cámara."
+        )
+        sugs.append(luc_txt)
 
     sc = d["web"]["search_console"]
     if sc.get("clics_var_pct", 0) > 0:
@@ -348,8 +378,8 @@ def sugerir_ejecutivo(d: dict, deltas: dict, totales: dict) -> dict:
     puntos = parts[:3]
     while len(puntos) < 3:
         puntos.append(
-            f"El detalle por sección (capturas y desgloses) sigue a esta diapositiva "
-            f"para <b>{d['mes_label']}</b>."
+            f"El detalle por sección (capturas y desgloses) sigue en las diapositivas "
+            f"siguientes para <b>{d['mes_label']}</b>."
         )
 
     sintesis = " ".join(puntos[:3])

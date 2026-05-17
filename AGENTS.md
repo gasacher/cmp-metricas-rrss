@@ -48,14 +48,10 @@ ese mes — listo para previsualizar en el navegador y exportar a PDF.
 
 6. **Confirmar con el usuario**
    - Mostrar las variaciones más relevantes (impresiones, seguidores, web).
-   - Pedir que revise la diapositiva **En foco** (resumen en una sola slide),
-     y los borradores de Conclusiones y Oportunidades.
-   - Para editar «En foco»: en `datos.yaml` la clave opcional `ejecutivo` con
-     `puntos` (lista de **tres** strings, HTML permitido) y `acciones` (lista de
-     **dos** strings). Se admite legacy `sintesis` + dos `acciones` sin `puntos`:
-     el script parte la síntesis en bullets o completa con sugerencias.
-     Si `ejecutivo` no está o está incompleto, el script lo completa a partir de
-     los datos y las oportunidades sugeridas.
+   - Pedir que revise los borradores de **Conclusiones** y **Oportunidades**.
+   - Opcional: en `datos.yaml` la clave `ejecutivo` con `puntos` (tres strings)
+     y `acciones` (dos strings) se usa en borradores / histórico; el HTML del
+     informe ya no incluye una slide separada de resumen ejecutivo.
    - Para Conclusiones / Oportunidades: modificar las listas en `datos.yaml` y
      volver a correr el script.
 

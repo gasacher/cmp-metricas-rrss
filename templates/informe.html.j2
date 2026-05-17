@@ -699,6 +699,17 @@
   .h-cap-md { height: 420px; box-sizing: border-box; }
   .h-cap-lg { height: 500px; box-sizing: border-box; }
 
+  /* Descubrimiento orgánico: recorte visual sobre la captura completa */
+  .capture-frame.pub-organic-cap img {
+    object-fit: cover;
+    object-position: 50% 24%;
+  }
+  /* Seguidores: enfatizar zona superior tipo «Datos destacados» */
+  .capture-frame.seguidores-destacados-cap img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
   /*
    * Slides con mucho KPI + capturas: el slide mide 1080px y overflow:hidden
    * recortaba la parte inferior. .slide--fill + .fill-grow reparten el alto:
@@ -1284,131 +1295,11 @@
   </div>
 </section>
 
-{# ============================================================ En foco — una slide (sin capturas) #}
-<section class="slide slide--exec-dash">
-  <div class="exec-dash-bar">
-    <div class="exec-dash-kicker">En foco</div>
-    <div class="exec-dash-title">{{ d.mes_label }}</div>
-    <div class="exec-dash-sub">Cuatro números clave, tres lecturas del mes y dos acciones. El detalle y las capturas vienen después.</div>
-  </div>
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-  <div class="exec-dash-body">
-    <div class="exec-dash-kpi-row">
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Interacciones · página LinkedIn</div>
-        <div class="dk-v">{{ fmt_num(totales.contenidos.actual) }}</div>
-        <div class="dk-d delta {{ delta_class(deltas.interacciones_total) }}">{{ delta_str(deltas.interacciones_total) }} vs {{ d.mes_anterior_label }}</div>
-      </div>
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Nuevos seguidores · página</div>
-        <div class="dk-v">{{ fmt_num(d.seguidores.actual.nuevos) }}</div>
-        <div class="dk-d delta {{ delta_class(deltas.seguidores_nuevos) }}">{{ delta_str(deltas.seguidores_nuevos) }} vs {{ d.mes_anterior_label }}</div>
-      </div>
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Clics · Search Console</div>
-        <div class="dk-v">{{ fmt_num(d.web.search_console.clics) }}</div>
-        {% set wv = d.web.search_console.clics_var_pct or 0 %}
-        <div class="dk-d delta {% if wv > 0 %}up{% elif wv < 0 %}down{% else %}flat{% endif %}">
-          {% if wv > 0 %}▲{% elif wv < 0 %}▼{% else %}▸{% endif %} {{ wv|abs }}% vs {{ d.mes_anterior_label }}
-        </div>
-      </div>
-      {% if d.visitantes_pagina %}
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Visitantes únicos · página</div>
-        <div class="dk-v">{{ fmt_num(d.visitantes_pagina.actual.visitantes_unicos) }}</div>
-        <div class="dk-d delta {{ delta_class(deltas.visit_unique) }}">{{ delta_str(deltas.visit_unique) }} vs {{ d.mes_anterior_label }}</div>
-      </div>
-      {% elif d.luciana %}
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Interacciones · perfil ejecutivo</div>
-        <div class="dk-v">{{ fmt_num(d.luciana.interaccion.actual.sociales_total) }}</div>
-        {% if d.luciana.interaccion.anterior and deltas.luc_interacciones is not none %}
-        <div class="dk-d delta {{ delta_class(deltas.luc_interacciones) }}">{{ delta_str(deltas.luc_interacciones) }} vs {{ d.mes_anterior_label }}</div>
-        {% else %}
-        <div class="dk-d delta flat">Sin comparación</div>
-        {% endif %}
-      </div>
-      {% elif d.youtube and d.youtube.actual %}
-      <div class="exec-dash-kpi">
-        <div class="dk-l">Vistas · YouTube</div>
-        <div class="dk-v">{{ fmt_num(d.youtube.actual.vistas) }}</div>
-        {% if d.youtube.anterior and deltas.yt_vistas is not none %}
-        <div class="dk-d delta {{ delta_class(deltas.yt_vistas) }}">{{ delta_str(deltas.yt_vistas) }} vs {{ d.mes_anterior_label }}</div>
-        {% else %}
-        <div class="dk-d delta flat">Sin comparación</div>
-        {% endif %}
-      </div>
-      {% else %}
-      <div class="exec-dash-kpi exec-dash-kpi--muted">
-        <div class="dk-l">Cuarto indicador</div>
-        <div class="dk-v">—</div>
-        <div class="dk-d delta flat">Sin dato este mes</div>
-      </div>
-      {% endif %}
-    </div>
-    <div class="exec-dash-split">
-      <div class="exec-dash-panel-paso">
-        <h3 class="exec-dash-h3">Qué pasó</h3>
-        <p class="exec-dash-hint">
-          Tres lecturas de los KPIs de arriba. Las editás en <code>ejecutivo.puntos</code> en <code>datos.yaml</code>.
-        </p>
-        <ul class="exec-dash-puntos">
-          {% for p in d.ejecutivo.puntos %}
-          <li>{{ p|safe }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="exec-dash-panel-hacer">
-        <h3 class="exec-dash-h3">Qué hacer</h3>
-        <p class="exec-dash-hint">
-          Dos prioridades para el próximo ciclo (a partir de oportunidades). Las editás en
-          <code>ejecutivo.acciones</code> en <code>datos.yaml</code>.
-        </p>
-        <div class="exec-dash-actions-grid">
-          {% for a in d.ejecutivo.acciones %}
-          <article class="exec-dash-act-card">
-            <div class="exec-dash-act-num" aria-hidden="true">{{ loop.index }}</div>
-            <div class="exec-dash-act-text">{{ a|safe }}</div>
-          </article>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 {# ============================================================ Slide - Glosario #}
 <section class="slide">
   <h2 class="title-lg">Glosario</h2>
   <div class="subtitle">Definiciones de las métricas usadas en este informe</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-
-  <div class="gloss-intro">
-    <p style="margin-bottom: 12px;">
-    Los términos del glosario van <strong>numerados del 1 al 10</strong>. Los primeros ítems (1 a 8) describen métricas de
-    <strong>LinkedIn</strong>: en casi todos los casos de la <strong>página institucional de la Cámara</strong>, salvo
-    donde se indica explícitamente el <strong>perfil personal</strong>.
-    </p>
-    <p style="margin-bottom: 12px;">
-    <strong>Orden del informe (referencia):</strong> portada; una diapositiva
-    <strong>En foco</strong> (números clave, lectura breve y acciones, sin capturas); luego el
-    <strong>glosario</strong> y las secciones de
-    <strong>LinkedIn — página de la Cámara</strong> (Contenidos, publicación destacada, seguidores, visitantes de la página);
-    luego <strong>YouTube</strong> (canal institucional). Las diapositivas tituladas <strong>«Perfil ejecutivo»</strong> y
-    <strong>«Perfil — Contenido»</strong> corresponden al <strong>perfil personal de LinkedIn</strong>
-    {% if 'luciana' in d and d.luciana %}de <strong>{{ d.luciana.perfil.nombre }}</strong>{% endif %}, no a la página de la Cámara.
-    Cierran <strong>WhatsApp</strong>, <strong>Web (Search Console)</strong> y las conclusiones.
-    </p>
-    <p style="margin-bottom: 12px;">
-    Las métricas de <strong>Contenidos, Publicación destacada, Seguidores y Visitantes</strong> son siempre de la
-    <strong>página de LinkedIn de la Cámara de Medios de Pago</strong> (cuenta institucional), para no confundirlas con YouTube ni con la web.
-    </p>
-    <p>
-    <strong>YouTube</strong> refiere al canal institucional de la Cámara.
-    <strong>Web</strong> refiere a métricas de <strong>Google Search Console</strong> del sitio
-    <a href="https://camarademediosdepago.ar/" style="color: var(--verde-cmp-osc);">camarademediosdepago.ar</a>.
-    </p>
-  </div>
 
   <div class="glosario-grid" style="margin-top: 22px;">
     <div class="gloss-item">
@@ -1484,77 +1375,70 @@
   </div>
 </section>
 
-{# ============================================================ Slide - Contenidos #}
-<section class="slide">
+{# ============================================================ Slide - Contenidos (KPI + capturas) #}
+<section class="slide slide--fill slide--contenidos-combo">
   <h2 class="title-lg">Contenidos</h2>
-  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara de Medios de Pago</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara de Medios de Pago · datos destacados</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 16px;">
-    <div class="kpi-badge">KPI principal</div>
-    <div class="hero-kpi">
-      <div class="left">
-        <div class="label">Interacciones totales</div>
-        <div class="value">{{ fmt_num(totales.contenidos.actual) }}</div>
-        <div class="delta {{ delta_class(deltas.interacciones_total) }}">{{ delta_str(deltas.interacciones_total) }} vs {{ d.mes_anterior_label }}</div>
+  <div class="fill-grow" style="margin-top: 10px; display: flex; flex-direction: column; gap: 12px; min-height: 0;">
+    <div style="flex-shrink: 0;">
+      <div class="kpi-badge">KPI principal</div>
+      <div class="hero-kpi">
+        <div class="left">
+          <div class="label">Interacciones totales</div>
+          <div class="value">{{ fmt_num(totales.contenidos.actual) }}</div>
+          <div class="delta {{ delta_class(deltas.interacciones_total) }}">{{ delta_str(deltas.interacciones_total) }} vs {{ d.mes_anterior_label }}</div>
+        </div>
+        <div class="right">
+          <div class="compare-label">{{ d.mes_anterior_label }}</div>
+          <div class="compare-value">{{ fmt_num(totales.contenidos.anterior) }}</div>
+        </div>
       </div>
-      <div class="right">
-        <div class="compare-label">{{ d.mes_anterior_label }}</div>
-        <div class="compare-value">{{ fmt_num(totales.contenidos.anterior) }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="kpi-row" style="margin-top: 12px; grid-template-columns: repeat(5, 1fr); gap: 12px;">
-    <div class="kpi">
-      <div class="label">Reacciones</div>
-      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.reacciones) }}</div>
-      <div class="delta {{ delta_class(deltas.rea) }}">{{ delta_str(deltas.rea) }}</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Comentarios</div>
-      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.comentarios) }}</div>
-      <div class="delta {{ delta_class(deltas.com) }}">{{ delta_str(deltas.com) }}</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Compartidos</div>
-      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.compartidos) }}</div>
-      <div class="delta {{ delta_class(deltas.share) }}">{{ delta_str(deltas.share) }}</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Guardados</div>
-      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.guardados) }}</div>
-      <div class="delta flat"></div>
-    </div>
-    <div class="kpi">
-      <div class="label">Envíos en LinkedIn</div>
-      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.envios) }}</div>
-      <div class="delta flat"></div>
-    </div>
-  </div>
-</section>
-
-<section class="slide slide--sheet">
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-  <div class="sheet-ribbon">
-    <h2>Contenidos · capturas</h2>
-    <div class="subtitle"><strong>LinkedIn</strong> — datos destacados · {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
-  </div>
-  <div class="sheet-body">
-    <div class="sheet-cell">
-      <h4>Datos destacados · {{ d.mes_anterior_label }}</h4>
-      <div class="sheet-cap">
-        {% if capturas.contenidos_destacados_anterior %}
-          <img src="{{ capturas.contenidos_destacados_anterior }}" alt="">
-        {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_anterior en capturas/</div>{% endif %}
+      <div class="kpi-row" style="margin-top: 10px; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+        <div class="kpi">
+          <div class="label">Reacciones</div>
+          <div class="value" style="font-size: 34px;">{{ fmt_num(d.contenidos.actual.reacciones) }}</div>
+          <div class="delta {{ delta_class(deltas.rea) }}">{{ delta_str(deltas.rea) }}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Comentarios</div>
+          <div class="value" style="font-size: 34px;">{{ fmt_num(d.contenidos.actual.comentarios) }}</div>
+          <div class="delta {{ delta_class(deltas.com) }}">{{ delta_str(deltas.com) }}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Compartidos</div>
+          <div class="value" style="font-size: 34px;">{{ fmt_num(d.contenidos.actual.compartidos) }}</div>
+          <div class="delta {{ delta_class(deltas.share) }}">{{ delta_str(deltas.share) }}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Guardados</div>
+          <div class="value" style="font-size: 34px;">{{ fmt_num(d.contenidos.actual.guardados) }}</div>
+          <div class="delta flat"></div>
+        </div>
+        <div class="kpi">
+          <div class="label">Envíos en LinkedIn</div>
+          <div class="value" style="font-size: 34px;">{{ fmt_num(d.contenidos.actual.envios) }}</div>
+          <div class="delta flat"></div>
+        </div>
       </div>
     </div>
-    <div class="sheet-cell">
-      <h4>Datos destacados · {{ d.mes_label }}</h4>
-      <div class="sheet-cap">
-        {% if capturas.contenidos_destacados_actual %}
-          <img src="{{ capturas.contenidos_destacados_actual }}" alt="">
-        {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_actual en capturas/</div>{% endif %}
+    <div class="capture-double" style="flex: 1; min-height: 0;">
+      <div class="col">
+        <h3 style="font-size: 15px; color: var(--verde-cmp-osc); margin-bottom: 6px;">Datos destacados · {{ d.mes_anterior_label }}</h3>
+        <div class="capture-frame h-cap-sm">
+          {% if capturas.contenidos_destacados_anterior %}
+            <img src="{{ capturas.contenidos_destacados_anterior }}" alt="">
+          {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_anterior en capturas/</div>{% endif %}
+        </div>
+      </div>
+      <div class="col">
+        <h3 style="font-size: 15px; color: var(--verde-cmp-osc); margin-bottom: 6px;">Datos destacados · {{ d.mes_label }}</h3>
+        <div class="capture-frame h-cap-sm">
+          {% if capturas.contenidos_destacados_actual %}
+            <img src="{{ capturas.contenidos_destacados_actual }}" alt="">
+          {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_actual en capturas/</div>{% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -1562,29 +1446,13 @@
 
 {# ============================================================ Slide - Publicación top #}
 {% if d.publicacion_top and d.publicacion_top.interaccion.interacciones %}
-<section class="slide slide--pub-metrics">
+<section class="slide slide--fill slide--pub-combo">
   <h2 class="title-lg">Publicación destacada</h2>
-  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara · contenido con mejor rendimiento</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara · KPI y capturas (análisis + descubrimiento orgánico)</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div class="pub-scroll">
-  <div style="margin-top: 12px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 20px;">
-    <div>
-      <div class="card">
-        <h3>Análisis de la publicación</h3>
-        <div style="font-size: 20px; line-height: 1.4; color: #334155;">{{ d.publicacion_top.descripcion }}</div>
-      </div>
-      <div class="card" style="margin-top: 14px;">
-        <h3>Alcance</h3>
-        <div class="row"><span class="l">Miembros alcanzados</span><span class="v">{{ fmt_num(d.publicacion_top.alcance.miembros_alcanzados) }}</span></div>
-      </div>
-      <div class="card" style="margin-top: 14px;">
-        <h3>Actividad orgánica de la página</h3>
-        <div class="row"><span class="l">Visualizaciones de la página</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.visualizaciones_pagina) }}</span></div>
-        <div class="row"><span class="l">Seguidores obtenidos</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.seguidores_obtenidos) }}</span></div>
-      </div>
-    </div>
-    <div>
+  <div class="fill-grow" style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1.05fr; gap: 16px; min-height: 0;">
+    <div style="min-width: 0; display: flex; flex-direction: column; gap: 12px;">
       <div class="kpi-badge">KPI principal</div>
       <div class="hero-kpi">
         <div class="left">
@@ -1593,7 +1461,7 @@
           <div class="delta flat">Tasa {{ d.publicacion_top.interaccion.tasa_interaccion_pct }}%</div>
         </div>
       </div>
-      <div class="card" style="margin-top: 14px;">
+      <div class="card" style="flex: 1; min-height: 0;">
         <h3>Detalle de interacción</h3>
         <div class="row"><span class="l">Clics</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.clics) }}</span></div>
         <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.reacciones) }}</span></div>
@@ -1603,100 +1471,84 @@
         <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.envios) }}</span></div>
       </div>
     </div>
-  </div>
-  </div>
-</section>
-
-<section class="slide slide--sheet">
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-  <div class="sheet-ribbon">
-    <h2>Publicación destacada · capturas</h2>
-    <div class="subtitle"><strong>LinkedIn</strong> — análisis de la publicación y descubrimiento orgánico</div>
-  </div>
-  <div class="sheet-body">
-    <div class="sheet-cell">
-      <h4>Vista principal del análisis</h4>
-      <div class="sheet-cap">
-        {% if capturas.publicacion_top %}
-          <img src="{{ capturas.publicacion_top }}" alt="">
-        {% else %}
-          <div class="placeholder">Pendiente: 03_publicacion_top en capturas/</div>
-        {% endif %}
+    <div style="min-width: 0; display: flex; flex-direction: column; gap: 10px; min-height: 0;">
+      <div style="flex: 1.1; min-height: 0; display: flex; flex-direction: column;">
+        <h3 style="font-size: 15px; color: var(--verde-cmp-osc); margin-bottom: 6px; flex-shrink: 0;">Vista principal del análisis</h3>
+        <div class="capture-frame h-cap-md" style="flex: 1; min-height: 0;">
+          {% if capturas.publicacion_top %}
+            <img src="{{ capturas.publicacion_top }}" alt="">
+          {% else %}
+            <div class="placeholder">Pendiente: 03_publicacion_top en capturas/</div>
+          {% endif %}
+        </div>
       </div>
-    </div>
-    <div class="sheet-cell">
-      <h4>Descubrimiento orgánico</h4>
-      <div class="sheet-cap">
-        {% if capturas.publicacion_descubrimiento %}
-          <img src="{{ capturas.publicacion_descubrimiento }}" alt="">
-        {% else %}
-          <div class="placeholder">Pendiente: descubrimiento_organico en capturas/</div>
-        {% endif %}
+      <div style="flex: 0.85; min-height: 0; display: flex; flex-direction: column;">
+        <h3 style="font-size: 15px; color: var(--verde-cmp-osc); margin-bottom: 6px; flex-shrink: 0;">Descubrimiento orgánico <span style="font-weight:600;color:#64748b;">(recorte)</span></h3>
+        <div class="capture-frame pub-organic-cap h-cap-sm" style="flex: 1; min-height: 0;">
+          {% if capturas.publicacion_descubrimiento %}
+            <img src="{{ capturas.publicacion_descubrimiento }}" alt="">
+          {% else %}
+            <div class="placeholder">Pendiente: descubrimiento_organico en capturas/</div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
 </section>
 {% endif %}
 
-{# ============================================================ Slide - Seguidores #}
-<section class="slide">
+{# ============================================================ Slide - Seguidores (KPI + capturas datos destacados) #}
+<section class="slide slide--fill slide--seguidores-combo">
   <h2 class="title-lg">Seguidores</h2>
-  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara de Medios de Pago</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara · KPI y capturas (recorte sobre «Datos destacados»)</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 16px;">
-    <div class="kpi-badge">KPI principal</div>
-    <div class="hero-kpi">
-      <div class="left">
-        <div class="label">Nuevos seguidores en el mes</div>
-        <div class="value">{{ fmt_num(d.seguidores.actual.nuevos) }}</div>
-        <div class="delta {{ delta_class(deltas.seguidores_nuevos) }}">{{ delta_str(deltas.seguidores_nuevos) }} vs {{ d.mes_anterior_label }}</div>
+  <div class="fill-grow" style="margin-top: 10px; display: flex; flex-direction: column; gap: 12px; min-height: 0;">
+    <div style="flex-shrink: 0;">
+      <div class="kpi-badge">KPI principal</div>
+      <div class="hero-kpi">
+        <div class="left">
+          <div class="label">Nuevos seguidores en el mes</div>
+          <div class="value">{{ fmt_num(d.seguidores.actual.nuevos) }}</div>
+          <div class="delta {{ delta_class(deltas.seguidores_nuevos) }}">{{ delta_str(deltas.seguidores_nuevos) }} vs {{ d.mes_anterior_label }}</div>
+        </div>
+        <div class="right">
+          <div class="compare-label">{{ d.mes_anterior_label }}</div>
+          <div class="compare-value">{{ fmt_num(d.seguidores.anterior.nuevos) }}</div>
+        </div>
       </div>
-      <div class="right">
-        <div class="compare-label">{{ d.mes_anterior_label }}</div>
-        <div class="compare-value">{{ fmt_num(d.seguidores.anterior.nuevos) }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 16px;">
-    <div class="kpi">
-      <div class="label">Total de seguidores · {{ d.mes_label }}</div>
-      <div class="value">{{ fmt_num(d.seguidores.actual.total) }}</div>
-      <div class="delta {{ delta_class(deltas.seguidores_total) }}">{{ delta_str(deltas.seguidores_total) }} vs {{ d.mes_anterior_label }}</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Total de seguidores · {{ d.mes_anterior_label }}</div>
-      <div class="value">{{ fmt_num(d.seguidores.anterior.total) }}</div>
-    </div>
-  </div>
-</section>
-
-<section class="slide slide--sheet">
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-  <div class="sheet-ribbon">
-    <h2>Seguidores · capturas</h2>
-    <div class="subtitle"><strong>LinkedIn</strong> — {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
-  </div>
-  <div class="sheet-body">
-    <div class="sheet-cell">
-      <h4>{{ d.mes_anterior_label }}</h4>
-      <div class="sheet-cap">
-        {% if capturas.seguidores_anterior %}
-          <img src="{{ capturas.seguidores_anterior }}" alt="">
-        {% else %}
-          <div class="placeholder">Captura · seguidores {{ d.mes_anterior_label }}</div>
-        {% endif %}
+      <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 12px;">
+        <div class="kpi">
+          <div class="label">Total de seguidores · {{ d.mes_label }}</div>
+          <div class="value">{{ fmt_num(d.seguidores.actual.total) }}</div>
+          <div class="delta {{ delta_class(deltas.seguidores_total) }}">{{ delta_str(deltas.seguidores_total) }} vs {{ d.mes_anterior_label }}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Total de seguidores · {{ d.mes_anterior_label }}</div>
+          <div class="value">{{ fmt_num(d.seguidores.anterior.total) }}</div>
+        </div>
       </div>
     </div>
-    <div class="sheet-cell">
-      <h4>{{ d.mes_label }}</h4>
-      <div class="sheet-cap">
-        {% if capturas.seguidores_actual %}
-          <img src="{{ capturas.seguidores_actual }}" alt="">
-        {% else %}
-          <div class="placeholder">Captura · seguidores {{ d.mes_label }}</div>
-        {% endif %}
+    <div class="capture-double" style="flex: 1; min-height: 0;">
+      <div class="col">
+        <h4 style="margin-bottom: 6px;">{{ d.mes_anterior_label }}</h4>
+        <div class="capture-frame h-cap-sm seguidores-destacados-cap">
+          {% if capturas.seguidores_anterior %}
+            <img src="{{ capturas.seguidores_anterior }}" alt="">
+          {% else %}
+            <div class="placeholder">Captura · seguidores {{ d.mes_anterior_label }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col">
+        <h4 style="margin-bottom: 6px;">{{ d.mes_label }}</h4>
+        <div class="capture-frame h-cap-sm seguidores-destacados-cap">
+          {% if capturas.seguidores_actual %}
+            <img src="{{ capturas.seguidores_actual }}" alt="">
+          {% else %}
+            <div class="placeholder">Captura · seguidores {{ d.mes_label }}</div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -1762,11 +1614,11 @@
 </section>
 {% endif %}
 
-{# ============================================================ Slide - YouTube #}
+{# ============================================================ Slide - YouTube (vistas desde datos; detalle en capturas) #}
 {% if d.youtube and d.youtube.actual %}
 <section class="slide">
   <h2 class="title-lg"><span class="yt-icon"></span>YouTube</h2>
-  <div class="subtitle">{{ d.mes_label }} · Canal de la Cámara de Medios de Pago</div>
+  <div class="subtitle">{{ d.mes_label }} · Canal de la Cámara · las cifras de suscriptores, CTR y tiempo salen de las capturas de YouTube Studio</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
   <div style="margin-top: 16px;">
@@ -1787,31 +1639,6 @@
         <div class="compare-value">{{ fmt_num(d.youtube.anterior.vistas) }}</div>
       </div>
       {% endif %}
-    </div>
-  </div>
-
-  <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); margin-top: 14px;">
-    <div class="kpi">
-      <div class="label">Suscriptores totales</div>
-      <div class="value">{{ fmt_num(d.youtube.actual.suscriptores_total) }}</div>
-      {% if d.youtube.actual.suscriptores_nuevos %}
-      <div class="delta up">+{{ d.youtube.actual.suscriptores_nuevos }} en el mes</div>
-      {% endif %}
-    </div>
-    <div class="kpi">
-      <div class="label">Tiempo de reproducción (hs)</div>
-      <div class="value">{{ d.youtube.actual.tiempo_reproduccion_hrs }}</div>
-    </div>
-    <div class="kpi">
-      <div class="label">CTR de las impresiones</div>
-      <div class="value">{{ d.youtube.actual.ctr_pct }}%</div>
-    </div>
-  </div>
-
-  <div class="kpi-row" style="grid-template-columns: 1fr; margin-top: 6px;">
-    <div class="kpi">
-      <div class="label">Duración promedio de visualización</div>
-      <div class="value" style="font-size: 38px;">{{ duracion_str(d.youtube.actual.duracion_promedio_seg) }}</div>
     </div>
   </div>
 </section>
@@ -1880,6 +1707,11 @@
     <div class="kpi">
       <div class="label">Total de seguidores</div>
       <div class="value">{{ fmt_num(d.luciana.seguidores.actual.total) }}</div>
+      {% if d.luciana.seguidores.actual.nota_total %}
+      <div style="font-size: 14px; color: var(--gris-text); margin-top: 8px; line-height: 1.4;">{{ d.luciana.seguidores.actual.nota_total }}</div>
+      {% else %}
+      <div style="font-size: 14px; color: var(--gris-text); margin-top: 8px; line-height: 1.4;">Fuente: número de seguidores del perfil en LinkedIn, leído de la captura <strong>08_luciana_perfil_actual</strong> (o equivalente) del mes.</div>
+      {% endif %}
     </div>
     <div class="kpi">
       <div class="label">Interacciones sociales del mes</div>
@@ -1950,100 +1782,6 @@
   </div>
 </section>
 
-{# ============================================================ Slide - Luciana / Contenido + Top posts #}
-{% if capturas.luciana_top %}
-<section class="slide">
-  <h2 class="title-lg">Perfil — Contenido</h2>
-  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — perfil personal · publicaciones de {{ d.luciana.perfil.nombre }}</div>
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-
-  <div class="card" style="margin-top: 18px; max-width: 1100px;">
-    <h3>Detalle de interacción</h3>
-    {% set act = d.luciana.interaccion.actual %}
-    {% set suma_det = (act.reacciones|default(0, true)) + (act.comentarios|default(0, true)) + (act.compartidos|default(0, true)) + (act.guardados|default(0, true)) + (act.envios|default(0, true)) + (act.visitas_enlace|default(0, true)) %}
-    {% if act.sociales_total and suma_det == 0 %}
-    <p style="font-size: 18px; line-height: 1.45; color: #334155;">
-      <strong>Total de interacciones sociales del mes:</strong> {{ fmt_num(act.sociales_total) }}.
-      El desglose por tipo (reacciones, comentarios, etc.) debe tomarse del panel
-      <strong>«Interacción»</strong> de LinkedIn — subí la captura
-      <code style="font-size:14px;">09_luciana_interaccion_actual.jpg</code> en <code style="font-size:14px;">capturas/</code>
-      para que coincida con lo que muestra la red (evitar valores en cero que no reflejan el panel).
-    </p>
-    {% else %}
-    <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(act.reacciones) }}</span></div>
-    <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(act.comentarios) }}</span></div>
-    <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(act.compartidos) }}</span></div>
-    <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(act.guardados) }}</span></div>
-    <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(act.envios) }}</span></div>
-    <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(act.visitas_enlace) }}</span></div>
-    {% endif %}
-  </div>
-</section>
-
-<section class="slide slide--sheet">
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-  <div class="sheet-ribbon">
-    <h2>Perfil — Contenido · captura</h2>
-    <div class="subtitle"><strong>LinkedIn</strong> — publicaciones con mejor rendimiento · {{ d.luciana.perfil.nombre }}</div>
-  </div>
-  <div class="sheet-body sheet-body--single">
-    <div class="sheet-cell">
-      <h4>Publicaciones con mejor rendimiento</h4>
-      <div class="sheet-cap">
-        <img src="{{ capturas.luciana_top }}" alt="">
-      </div>
-    </div>
-  </div>
-</section>
-{% else %}
-<section class="slide slide--fill slide--luciana-grid">
-  <h2 class="title-lg">Perfil — Contenido</h2>
-  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — perfil personal · publicaciones de {{ d.luciana.perfil.nombre }}</div>
-  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-
-  <div class="fill-grow" style="margin-top: 10px;">
-  <div class="lc-grid">
-    <div class="lc-col-text">
-      <div class="card">
-      <h3>Detalle de interacción</h3>
-      {% set act = d.luciana.interaccion.actual %}
-      {% set suma_det = (act.reacciones|default(0, true)) + (act.comentarios|default(0, true)) + (act.compartidos|default(0, true)) + (act.guardados|default(0, true)) + (act.envios|default(0, true)) + (act.visitas_enlace|default(0, true)) %}
-      {% if act.sociales_total and suma_det == 0 %}
-      <p style="font-size: 18px; line-height: 1.45; color: #334155;">
-        <strong>Total de interacciones sociales del mes:</strong> {{ fmt_num(act.sociales_total) }}.
-        El desglose por tipo (reacciones, comentarios, etc.) debe tomarse del panel
-        <strong>«Interacción»</strong> de LinkedIn — subí la captura
-        <code style="font-size:14px;">09_luciana_interaccion_actual.jpg</code> en <code style="font-size:14px;">capturas/</code>
-        para que coincida con lo que muestra la red (evitar valores en cero que no reflejan el panel).
-      </p>
-      {% else %}
-      <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(act.reacciones) }}</span></div>
-      <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(act.comentarios) }}</span></div>
-      <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(act.compartidos) }}</span></div>
-      <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(act.guardados) }}</span></div>
-      <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(act.envios) }}</span></div>
-      <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(act.visitas_enlace) }}</span></div>
-      {% endif %}
-      </div>
-    </div>
-    <div class="lc-col-cap">
-      <h3 style="font-size: 22px; color: var(--verde-cmp-osc); margin-bottom: 10px; flex-shrink: 0;">Publicaciones con mejor rendimiento</h3>
-      <div style="flex: 1; min-height: 0; overflow: auto;">
-      {% for p in d.luciana.publicaciones_top %}
-      <div class="card" style="margin-bottom: 10px; padding: 14px 18px;">
-        <div style="font-size: 16px; line-height: 1.4; margin-bottom: 6px;">{{ p.texto }}</div>
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-          <span style="font-size: 13px; color: var(--gris-text); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Interacciones</span>
-          <span style="font-size: 24px; font-weight: 900; color: var(--verde-cmp-osc);">{{ p.interacciones }}</span>
-        </div>
-      </div>
-      {% endfor %}
-      </div>
-    </div>
-  </div>
-  </div>
-</section>
-{% endif %}
 {% endif %}
 
 {# ============================================================ Slide - WhatsApp #}
@@ -2109,24 +1847,10 @@
   </div>
   </div>
 
-  {% if d.web.nota_contenido %}
-  <div class="gloss-intro" style="margin-top: 12px; border-left-color: #f59e0b; font-size: 16px; padding: 12px 14px;">
-    {{ d.web.nota_contenido }}
-  </div>
-  {% endif %}
-
-  {% if not capturas.web_contenido %}
-  <div class="gloss-intro" style="margin-top: 10px; border-left-color: #94a3b8; font-size: 15px; padding: 12px 14px;">
-    <strong>Misma fuente — Search Console:</strong> las capturas de <strong>Rendimiento</strong> y, si aplica, <strong>Tu contenido</strong> van en la diapositiva siguiente.
-    La tabla <strong>«Tu contenido — top URLs»</strong> de abajo también sale de Search Console (páginas con más clics).
-    Si querés sumar una captura de esa vista en el PDF, subila como
-    <code style="font-size:14px;">06_web_contenido.jpg</code> en <code style="font-size:14px;">capturas/</code> (menú <strong>«Tu contenido»</strong> en el panel izquierdo).
-  </div>
-  {% endif %}
-
   {% if d.web.contenido_top and d.web.contenido_top|length > 0 %}
   <div class="web-list web-list--fit" style="margin-top: 12px; max-height: 380px;">
-    <h3 style="font-size: 17px; color: var(--verde-cmp-osc); margin-bottom: 6px;">Tu contenido — top URLs</h3>
+    <h3 style="font-size: 17px; color: var(--verde-cmp-osc); margin-bottom: 4px;">Tu contenido — top URLs</h3>
+    <p style="font-size: 13px; color: var(--gris-text); margin-bottom: 8px; line-height: 1.35;">Clics según Search Console. La tercera columna es la <strong>variación porcentual de clics</strong> respecto al período anterior <em>solo si</em> ese dato está cargado en <code>datos.yaml</code> a partir de la vista «Tu contenido»; si no está verificado, se muestra «—».</p>
     {% for c in d.web.contenido_top %}
     <div class="item">
       <div>
@@ -2134,22 +1858,17 @@
         {% if c.url %}<div class="url">{{ c.url }}</div>{% endif %}
       </div>
       <div class="clics">{{ c.clics }}</div>
-      <div class="delta {% if c.var_pct is not none and c.var_pct >= 0 %}up{% elif c.var_pct is not none %}down{% else %}flat{% endif %}">
-        {% if c.var_pct is not none %}
+      <div class="delta {% if c.var_pct is defined and c.var_pct is not none and c.var_pct >= 0 %}up{% elif c.var_pct is defined and c.var_pct is not none %}down{% else %}flat{% endif %}">
+        {% if c.var_pct is defined and c.var_pct is not none %}
           {% if c.var_pct >= 0 %}▲{% else %}▼{% endif %} {{ c.var_pct|abs }}%
         {% elif c.nota %}
           {{ c.nota }}
+        {% else %}
+          —
         {% endif %}
       </div>
     </div>
     {% endfor %}
-  </div>
-  {% else %}
-  <div class="gloss-intro" style="margin-top: 12px; border-left-color: #64748b; font-size: 15px; padding: 12px 14px;">
-    <strong>Tabla «Tu contenido»:</strong> este mes no hay filas cargadas en <code style="font-size:14px;">datos.yaml</code>
-    (o la lista está vacía). Suele deberse a que falta la captura
-    <code style="font-size:14px;">06_web_contenido</code> para leer clics por URL.
-    El KPI de clics y las capturas de Rendimiento arriba siguen siendo válidos.
   </div>
   {% endif %}
 </section>
