@@ -48,13 +48,23 @@ ese mes — listo para previsualizar en el navegador y exportar a PDF.
 
 6. **Confirmar con el usuario**
    - Mostrar las variaciones más relevantes (impresiones, seguidores, web).
-   - Pedir que revise los borradores de Conclusiones y Oportunidades.
-   - Si quiere editarlos: modificar `datos.yaml` (las claves `conclusiones` y
-     `oportunidades`, lista de strings) y volver a correr el script.
+   - Pedir que revise la diapositiva **En foco** (resumen en una sola slide),
+     y los borradores de Conclusiones y Oportunidades.
+   - Para editar «En foco»: en `datos.yaml` la clave opcional `ejecutivo` con
+     `puntos` (lista de **tres** strings, HTML permitido) y `acciones` (lista de
+     **dos** strings). Se admite legacy `sintesis` + dos `acciones` sin `puntos`:
+     el script parte la síntesis en bullets o completa con sugerencias.
+     Si `ejecutivo` no está o está incompleto, el script lo completa a partir de
+     los datos y las oportunidades sugeridas.
+   - Para Conclusiones / Oportunidades: modificar las listas en `datos.yaml` y
+     volver a correr el script.
 
 ## Reglas
 - El script SÓLO regenera Conclusiones / Oportunidades cuando esas claves
   están vacías en `datos.yaml`. Si el usuario las editó, respetarlas.
+- Igual criterio para **`ejecutivo`**: si `puntos` (tres ítems) y dos `acciones`
+  vienen completos en `datos.yaml`, no se sobrescriben. Si solo hay `sintesis`
+  + acciones, se derivan `puntos` sin pisar las acciones editadas.
 - El histórico (`data/historial.json`) se sobrescribe entrada por mes; nunca
   borrar otros meses.
 - Las capturas se embeben en el HTML como `data:` URI, así el HTML es

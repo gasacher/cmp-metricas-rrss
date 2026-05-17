@@ -1,6 +1,6 @@
 # Informe — Diciembre 2025
 
-_Generado el 2026-05-07 13:34_
+_Generado el 2026-05-16 17:34_
 
 ## KPI principal del mes
 - **Interacciones totales (CMP):** 139 (▲ 414.8%)
@@ -8,7 +8,15 @@ _Generado el 2026-05-07 13:34_
 - **Visitantes únicos:** 54 (▲ 58.8%)
 - **Vistas YouTube:** 2
 - **Interacciones perfil Luciana:** 103
-- **Clics web (Search Console):** 64 (+19%)
+- **Clics web (Search Console):** 64 (+19% vs Noviembre 2025)
+
+## Apertura ejecutiva (texto)
+- LinkedIn · página CMP: 139 interacciones vs 27 en Noviembre 2025 (▲ 414.8%).
+- Seguidores de la página: +64 nuevos (▲ 42.2% vs Noviembre 2025); total 1.030.
+- Web (Search Console): 64 clics (+19% vs Noviembre 2025).
+
+1. Sostener la frecuencia de publicaciones, especialmente en semanas de menor actividad, para mantener el ritmo de adquisición de seguidores.
+2. Replicar contenidos del tipo eventos, reuniones y acciones institucionales, que demuestran consistentemente alto nivel de engagement.
 
 ## Conclusiones (borrador)
 - Durante diciembre 2025 se registró un <b>crecimiento significativo en interacciones (+415%)</b>, pasando de 27 a <b>139</b>, lo que refleja mayor engagement de la comunidad con el contenido publicado.

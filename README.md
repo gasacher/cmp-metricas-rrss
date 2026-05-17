@@ -111,6 +111,7 @@ Cualquier hosting estático acepta dominio propio. En Netlify es gratis: subís 
 | `04b_visitantes_actual.png/jpg`             | LinkedIn → Análisis → Visitantes (actual) |
 | `06_web_searchconsole_anterior.png/jpg`     | Google Search Console (mes anterior) |
 | `06_web_searchconsole_actual.png/jpg`       | Google Search Console (mes actual) |
+| `06_web_contenido.png/jpg`                 | Search Console → «Tu contenido» (ranking URLs / clics) |
 | `07_youtube_anterior.png/jpg`               | YouTube Studio (mes anterior) |
 | `07_youtube_actual.png/jpg`                 | YouTube Studio (mes actual) |
 | `08_luciana_perfil_anterior.png/jpg`        | LinkedIn perfil Luciana (anterior) |

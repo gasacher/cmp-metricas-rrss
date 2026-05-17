@@ -24,3 +24,6 @@ public/
 
 # Binarios locales
 .tools/
+
+# Previews temporales del PDF (no subir al repo)
+.preview/

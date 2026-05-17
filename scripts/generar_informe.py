@@ -19,6 +19,7 @@ from __future__ import annotations
 import base64
 import json
 import mimetypes
+import re
 import sys
 from pathlib import Path
 from datetime import datetime
@@ -93,6 +94,7 @@ CAPTURAS_MAP = {
     "contenidos_destacados_anterior": "02_contenidos_destacados_anterior",
     "contenidos_destacados_actual":   "02_contenidos_destacados_actual",
     "publicacion_top":                "03_publicacion_top",
+    "publicacion_descubrimiento":     "descubrimiento_organico",
     "seguidores_anterior":            "04_seguidores_anterior",
     "seguidores_actual":              "04_seguidores_actual",
     "visitantes_anterior":            "04b_visitantes_anterior",
@@ -102,9 +104,11 @@ CAPTURAS_MAP = {
     "luciana_perfil_anterior":        "08_luciana_perfil_anterior",
     "luciana_perfil_actual":          "08_luciana_perfil_actual",
     "luciana_interaccion":            "09_luciana_interaccion",
+    "luciana_interaccion_actual":     "09_luciana_interaccion_actual",
     "luciana_top":                    "09_luciana_top",
     "web_searchconsole_anterior":     "06_web_searchconsole_anterior",
     "web_searchconsole_actual":       "06_web_searchconsole_actual",
+    "web_contenido":                  "06_web_contenido",
 }
 
 
@@ -198,7 +202,9 @@ def sugerir_conclusiones(d: dict, deltas: dict, totales: dict) -> list[str]:
         sugs.append(
             f"Durante {d['mes_label'].lower()} se observó una <b>caída en "
             f"interacciones ({var_int:.0f}%)</b>, pasando de {int_ant} a "
-            f"{int_act}. Sugiere revisar la frecuencia y el tipo de contenido."
+            f"{int_act}, asociada principalmente a una <b>baja frecuencia de "
+            f"posteos</b> en el mes (menor cantidad de publicaciones respecto "
+            f"al período anterior)."
         )
 
     s = d["seguidores"]
@@ -281,6 +287,126 @@ def sugerir_oportunidades(d: dict, deltas: dict) -> list[str]:
     return sugs
 
 
+def _strip_html(s: str) -> str:
+    return re.sub(r"<[^>]+>", "", str(s or "")).strip()
+
+
+def sugerir_ejecutivo(d: dict, deltas: dict, totales: dict) -> dict:
+    """Tres bullets cortos + dos acciones (una sola slide de apertura en el HTML)."""
+    lab = d["mes_anterior_label"]
+    parts: list[str] = []
+
+    vi = deltas.get("interacciones_total")
+    if vi is not None:
+        act, ant = totales["contenidos"]["actual"], totales["contenidos"]["anterior"]
+        parts.append(
+            f"<b>LinkedIn · página CMP:</b> {fmt_num(act)} interacciones vs {fmt_num(ant)} "
+            f"en {lab} ({delta_str(vi)})."
+        )
+
+    sn = deltas.get("seguidores_nuevos")
+    if sn is not None and d.get("seguidores"):
+        s = d["seguidores"]
+        parts.append(
+            f"<b>Seguidores de la página:</b> +{fmt_num(s['actual']['nuevos'])} nuevos "
+            f"({delta_str(sn)} vs {lab}); total {fmt_num(s['actual']['total'])}."
+        )
+
+    sc = (d.get("web") or {}).get("search_console") or {}
+    wv = sc.get("clics_var_pct")
+    if wv is not None and sc.get("clics") is not None:
+        wv_txt = f"+{wv}" if wv > 0 else str(wv)
+        parts.append(
+            f"<b>Web (Search Console):</b> {fmt_num(sc['clics'])} clics ({wv_txt}% vs {lab})."
+        )
+
+    if d.get("visitantes_pagina"):
+        vu = deltas.get("visit_unique")
+        if vu is not None:
+            v = d["visitantes_pagina"]["actual"]["visitantes_unicos"]
+            parts.append(
+                f"<b>Visitantes únicos</b> de la página: {fmt_num(v)} ({delta_str(vu)} vs {lab})."
+            )
+
+    if d.get("youtube") and d["youtube"].get("anterior"):
+        yt = deltas.get("yt_vistas")
+        if yt is not None:
+            y = d["youtube"]
+            parts.append(
+                f"<b>YouTube:</b> {fmt_num(y['actual']['vistas'])} vistas ({delta_str(yt)} vs {lab})."
+            )
+
+    if d.get("luciana") and d["luciana"].get("interaccion"):
+        li = deltas.get("luc_interacciones")
+        if li is not None:
+            L = d["luciana"]
+            parts.append(
+                f"<b>Perfil ejecutivo:</b> {fmt_num(L['interaccion']['actual']['sociales_total'])} "
+                f"interacciones sociales ({delta_str(li)} vs {lab})."
+            )
+
+    puntos = parts[:3]
+    while len(puntos) < 3:
+        puntos.append(
+            f"El detalle por sección (capturas y desgloses) sigue a esta diapositiva "
+            f"para <b>{d['mes_label']}</b>."
+        )
+
+    sintesis = " ".join(puntos[:3])
+
+    acciones: list[str] = []
+    for op in d.get("oportunidades") or []:
+        t = str(op or "").strip()
+        if t:
+            acciones.append(t)
+        if len(acciones) >= 2:
+            break
+    while len(acciones) < 2:
+        acciones.append(
+            "Sostener la <b>frecuencia y la calidad</b> de publicaciones en LinkedIn, "
+            "priorizando formatos con mejor respuesta en los últimos meses."
+        )
+    return {"puntos": puntos[:3], "sintesis": sintesis, "acciones": acciones[:2]}
+
+
+def _puntos_desde_sintesis(sintesis: str, relleno: list[str]) -> list[str]:
+    """Compat: `sintesis` larga en YAML → hasta 3 bullets; completa con sugeridos."""
+    plain = _strip_html(sintesis).strip()
+    if not plain:
+        return relleno[:3]
+    trozos = [t.strip() for t in re.split(r"(?<=[.!?])\s+", plain) if t.strip()]
+    out = trozos[:3]
+    for r in relleno:
+        if len(out) >= 3:
+            break
+        if _strip_html(r) not in [_strip_html(x) for x in out]:
+            out.append(r)
+    while len(out) < 3:
+        out.append(relleno[min(len(out), len(relleno) - 1)])
+    return out[:3]
+
+
+def asegurar_ejecutivo(d: dict, deltas: dict, totales: dict) -> None:
+    """Respeta `ejecutivo` completo en YAML; admite legacy `sintesis` + `acciones`."""
+    ex = d.get("ejecutivo")
+    if not isinstance(ex, dict):
+        ex = {}
+    acc = [a for a in (ex.get("acciones") or []) if str(a or "").strip()]
+    pts = [p for p in (ex.get("puntos") or []) if str(p or "").strip()]
+    if len(acc) >= 2 and len(pts) >= 3:
+        d["ejecutivo"] = ex
+        return
+    if len(acc) >= 2 and (ex.get("sintesis") or "").strip() and len(pts) < 3:
+        sug = sugerir_ejecutivo(d, deltas, totales)
+        ne = dict(ex)
+        ne["puntos"] = _puntos_desde_sintesis(ex["sintesis"], sug["puntos"])
+        ne["acciones"] = acc[:2]
+        ne.setdefault("sintesis", ex.get("sintesis") or sug["sintesis"])
+        d["ejecutivo"] = ne
+        return
+    d["ejecutivo"] = sugerir_ejecutivo(d, deltas, totales)
+
+
 # =============================================================================
 # Histórico
 # =============================================================================
@@ -329,8 +455,27 @@ def render_md(d: dict, deltas: dict, totales: dict) -> str:
     if d.get("luciana"):
         L.append(f"- **Interacciones perfil Luciana:** "
                  f"{d['luciana']['interaccion']['actual']['sociales_total']}")
-    L.append(f"- **Clics web (Search Console):** {d['web']['search_console']['clics']} "
-             f"(+{d['web']['search_console']['clics_var_pct']}%)")
+    wv = d["web"]["search_console"].get("clics_var_pct")
+    if wv is not None:
+        wv_s = f"+{wv}" if wv > 0 else (f"{wv}" if wv < 0 else "0")
+        L.append(
+            f"- **Clics web (Search Console):** {d['web']['search_console']['clics']} "
+            f"({wv_s}% vs {d['mes_anterior_label']})"
+        )
+    else:
+        L.append(
+            f"- **Clics web (Search Console):** {d['web']['search_console']['clics']}"
+        )
+    L.append("")
+    L.append("## Apertura ejecutiva (texto)")
+    ex = d.get("ejecutivo") or {}
+    for p in ex.get("puntos") or []:
+        L.append(f"- {_strip_html(p)}")
+    if not ex.get("puntos") and ex.get("sintesis"):
+        L.append(_strip_html(ex["sintesis"]))
+    L.append("")
+    for i, a in enumerate(ex.get("acciones", [])[:2], 1):
+        L.append(f"{i}. {_strip_html(a)}")
     L.append("")
     L.append("## Conclusiones (borrador)")
     for x in d["conclusiones"]:
@@ -364,6 +509,19 @@ def main():
     if not d.get("oportunidades"):
         d["oportunidades"] = sugerir_oportunidades(d, deltas)
 
+    # Asegurar mención explícita de «baja frecuencia de posteos» si cayó el engagement
+    v_int = deltas.get("interacciones_total")
+    if v_int is not None and v_int < 0 and d.get("conclusiones"):
+        phrase = "baja frecuencia de posteos"
+        if not any(phrase in (str(c) or "").lower() for c in d["conclusiones"]):
+            d["conclusiones"].append(
+                f"La caída de interacciones en la <b>página de LinkedIn de la Cámara</b> "
+                f"se contextualiza con <b>{phrase}</b> en el mes (menor cantidad de "
+                f"publicaciones respecto a {d['mes_anterior_label'].lower()})."
+            )
+
+    asegurar_ejecutivo(d, deltas, totales)
+
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES)),
         autoescape=select_autoescape(["html"]),
@@ -377,10 +535,12 @@ def main():
     tmpl = env.get_template("informe.html.j2")
 
     logo_uri = file_to_data_uri(ASSETS / "logo_cmp.png")
+    cover_laptop_uri = file_to_data_uri(ASSETS / "cover_laptop.png")
     capturas = cargar_capturas(mes_dir)
 
     html = tmpl.render(d=d, deltas=deltas, totales=totales,
-                       capturas=capturas, logo_uri=logo_uri)
+                       capturas=capturas, logo_uri=logo_uri,
+                       cover_laptop_uri=cover_laptop_uri)
     out_html = mes_dir / "informe.html"
     out_html.write_text(html, encoding="utf-8")
 

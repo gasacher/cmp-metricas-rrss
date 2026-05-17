@@ -29,6 +29,22 @@
     "youtube_vistas": 3,
     "youtube_suscriptores": 5,
     "luciana_seguidores": 2007,
-    "luciana_interacciones": 7
+    "luciana_interacciones": 103
+  },
+  "2026-02": {
+    "label": "Febrero 2026",
+    "interacciones_total": 118,
+    "seguidores": {
+      "total": 1218,
+      "nuevos": 67
+    },
+    "web_clics": 93,
+    "whatsapp_grupos": 4,
+    "whatsapp_miembros": 140,
+    "visitantes_unicos": 56,
+    "youtube_vistas": 0,
+    "youtube_suscriptores": 5,
+    "luciana_seguidores": 2026,
+    "luciana_interacciones": 40
   }
 }

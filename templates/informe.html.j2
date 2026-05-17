@@ -36,6 +36,7 @@
     --violeta: #a855f7;
     --naranja: #f59e0b;
     --rojo-yt: #ff0000;
+    --img-compare-h: 400px;
   }
 
   /* ===== Slide 16:9 escalable a cualquier pantalla ===== */
@@ -112,25 +113,331 @@
   }
   .kpi-badge::before { content: "★"; }
 
-  /* ===== Slide 1 - Portada ===== */
-  .cover {
+  /* ===== Portada (laptop + texto: .laptop es hermano de .cover, no hijo) ===== */
+  .slide-cover {
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-cover .cover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    min-height: calc(1080px - 140px);
+    position: relative;
+    z-index: 2;
+    max-width: 46%;
+    padding-right: 12px;
   }
-  .cover .title-xl { font-size: 156px; }
-  .cover .logo-cover {
-    margin-top: 60px;
-    width: 380px;
+  .slide-cover .cover .title-xl {
+    font-size: 128px;
+    line-height: 0.98;
   }
-  .cover .deco {
+  .slide-cover .cover .subtitle {
+    font-size: 28px;
+    margin-top: 10px;
+  }
+  .slide-cover .cover .logo-cover {
+    margin-top: 44px;
+    width: 320px;
+    max-width: 100%;
+  }
+  .slide-cover .laptop {
     position: absolute;
-    right: -80px; top: 0; bottom: 0;
-    width: 50%;
-    background: linear-gradient(135deg, var(--verde-lima) 0%, var(--verde-cmp) 100%);
-    border-radius: 50% 0 0 50%;
-    opacity: 0.92;
+    right: 90px;
+    top: 70px;
+    bottom: 70px;
+    width: 54%;
+    max-width: 1020px;
+    z-index: 1;
+    pointer-events: none;
+    min-width: 0;
+    min-height: 0;
+  }
+  .slide-cover .laptop img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center right;
+    display: block;
+  }
+
+  /* ===== Apertura: una sola slide «En foco» (sin capturas) ===== */
+  .slide.slide--exec-dash {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 56px;
+  }
+  .slide.slide--exec-dash .logo {
+    right: 90px;
+    top: 52px;
+  }
+  .slide.slide--exec-dash .exec-dash-bar {
+    margin: 0 0 0 0;
+    padding: 36px 90px 32px 118px;
+    background: linear-gradient(105deg, #0f172a 0%, #134e4a 55%, #0f172a 100%);
+    color: #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .slide.slide--exec-dash .exec-dash-bar::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 28px;
+    background: var(--verde-lima);
+  }
+  .slide.slide--exec-dash .exec-dash-kicker {
+    font-size: 17px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a7f3d0;
+    margin-bottom: 6px;
+  }
+  .slide.slide--exec-dash .exec-dash-title {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+  .slide.slide--exec-dash .exec-dash-sub {
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #cbd5e1;
+    max-width: 1100px;
+    line-height: 1.35;
+  }
+  .slide.slide--exec-dash .exec-dash-body {
+    padding: 28px 90px 0 118px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.slide--exec-dash .exec-dash-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .slide.slide--exec-dash .exec-dash-kpi {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 14px 16px 12px;
+    border: 1px solid var(--gris-medio);
+  }
+  .slide.slide--exec-dash .exec-dash-kpi.exec-dash-kpi--muted {
+    opacity: 0.75;
+  }
+  .slide.slide--exec-dash .exec-dash-kpi .dk-l {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    line-height: 1.2;
+  }
+  .slide.slide--exec-dash .exec-dash-kpi .dk-v {
+    font-size: 36px;
+    font-weight: 900;
+    color: #0f172a;
+    margin-top: 4px;
+    line-height: 1;
+  }
+  .slide.slide--exec-dash .exec-dash-kpi .dk-d {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .slide.slide--exec-dash .exec-dash-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 22px;
+    flex: 1;
+    min-height: 0;
+    align-items: stretch;
+  }
+  .slide.slide--exec-dash .exec-dash-h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .slide.slide--exec-dash .exec-dash-h3::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, currentColor 0%, transparent 100%);
+    opacity: 0.22;
+    min-width: 24px;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-h3 {
+    color: #334155;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-hacer .exec-dash-h3 {
+    color: #0f766e;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-h3::after {
+    background: linear-gradient(90deg, #94a3b8 0%, transparent 100%);
+    opacity: 0.35;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-hacer .exec-dash-h3::after {
+    background: linear-gradient(90deg, #5eead4 0%, transparent 100%);
+    opacity: 0.45;
+  }
+  .slide.slide--exec-dash .exec-dash-puntos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Panel «Qué pasó»: lecturas en tarjetas alineadas con «Qué hacer» */
+  .slide.slide--exec-dash .exec-dash-panel-paso {
+    background: linear-gradient(165deg, #f8fafc 0%, #f1f5f9 45%, #e2e8f0 100%);
+    border-radius: 16px;
+    border: 1px solid #cbd5e1;
+    padding: 22px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-puntos {
+    counter-reset: exec-punto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-puntos li {
+    counter-increment: exec-punto;
+    position: relative;
+    margin: 0;
+    padding: 18px 20px 18px 58px;
+    font-size: 22px;
+    line-height: 1.48;
+    color: #0f172a;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-puntos li::before {
+    content: counter(exec-punto);
+    position: absolute;
+    left: 16px;
+    top: 20px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #64748b 0%, #1e293b 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.25);
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-puntos li b {
+    color: var(--verde-cmp-osc);
+    font-weight: 800;
+  }
+  .slide.slide--exec-dash .exec-dash-hint {
+    font-size: 15px;
+    font-weight: 500;
+    color: #64748b;
+    margin: 0 0 14px 0;
+    line-height: 1.45;
+    max-width: 100%;
+  }
+  .slide.slide--exec-dash .exec-dash-hint code {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .slide.slide--exec-dash .exec-dash-panel-paso .exec-dash-hint code {
+    color: #1e40af;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #bfdbfe;
+  }
+  /* Panel «Qué hacer»: prioridades con mismo ritmo visual que la izquierda */
+  .slide.slide--exec-dash .exec-dash-panel-hacer {
+    background: linear-gradient(165deg, #ecfdf5 0%, #f8fafc 42%, #f1f5f9 100%);
+    border-radius: 16px;
+    border: 1px solid #bbf7d0;
+    padding: 22px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+  }
+  .slide.slide--exec-dash .exec-dash-panel-hacer .exec-dash-hint code {
+    color: #0f766e;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #d1fae5;
+  }
+  .slide.slide--exec-dash .exec-dash-actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+  }
+  .slide.slide--exec-dash .exec-dash-act-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+  .slide.slide--exec-dash .exec-dash-act-num {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: linear-gradient(145deg, var(--verde-cmp) 0%, #0d9488 100%);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35);
+  }
+  .slide.slide--exec-dash .exec-dash-act-text {
+    font-size: 22px;
+    line-height: 1.48;
+    color: #0f172a;
+    padding-top: 4px;
+  }
+  .slide.slide--exec-dash .exec-dash-act-text b {
+    color: var(--verde-cmp-osc);
+    font-weight: 800;
   }
 
   /* ===== Glosario ===== */
@@ -143,6 +450,8 @@
   .gloss-item {
     border-left: 6px solid var(--verde-cmp);
     padding: 6px 18px;
+    display: flex;
+    align-items: flex-start;
   }
   .gloss-item .term {
     font-size: 26px;
@@ -155,6 +464,32 @@
     line-height: 1.4;
     margin-top: 4px;
   }
+  .gloss-intro {
+    font-size: 22px;
+    line-height: 1.55;
+    color: #334155;
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 22px 28px;
+    margin-top: 24px;
+    border-left: 6px solid var(--verde-cmp);
+  }
+  .gloss-intro strong { color: var(--verde-cmp-osc); }
+  .gloss-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    background: var(--verde-lima);
+    color: var(--verde-cmp-osc);
+    font-weight: 900;
+    font-size: 20px;
+    border-radius: 8px;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .gloss-item .gloss-body { flex: 1; min-width: 0; }
 
   /* ===== KPI principal destacado (la estrella) ===== */
   .hero-kpi {
@@ -162,7 +497,7 @@
     /* Color sólido como respaldo si el navegador no imprime gradientes */
     background-color: #2DAA9E;
     color: white;
-    padding: 32px 40px;
+    padding: 26px 36px;
     border-radius: 16px;
     box-shadow: 0 12px 40px rgba(45, 170, 158, 0.35);
     display: flex;
@@ -180,7 +515,7 @@
     opacity: 0.95;
   }
   .hero-kpi .value {
-    font-size: 140px;
+    font-size: 118px;
     font-weight: 900;
     line-height: 1;
     margin-top: 8px;
@@ -264,18 +599,334 @@
   }
   .compare .col .stat .v { font-size: 34px; font-weight: 900; }
   .compare .col .stat .l { font-size: 14px; color: var(--gris-text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  /* Capturas comparativas (seguidores / visitantes): imagen rellena el marco sin recortar contenido */
   .compare .col .img-wrap {
+    position: relative;
     background: white;
     border: 1px solid var(--gris-medio);
     border-radius: 8px;
     overflow: hidden;
-    height: 280px;
-    display: flex; align-items: center; justify-content: center;
+    height: var(--img-compare-h, 400px);
+    box-sizing: border-box;
   }
-  .compare .col .img-wrap img { width: 100%; height: 100%; object-fit: contain; }
-  .compare .col .img-wrap .placeholder { color: var(--gris-medio); font-size: 18px; }
+  .compare .col .img-wrap img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+  }
+  .compare .col .img-wrap .placeholder {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--gris-medio);
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.4;
+  }
 
-  /* ===== Card genérica ===== */
+  /* Marco único de captura (LinkedIn, YouTube, Web, Luciana, etc.) */
+  .capture-frame {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--gris-medio);
+    border-radius: 12px;
+    overflow: hidden;
+    display: block;
+    margin-top: 14px;
+    box-sizing: border-box;
+  }
+  .capture-frame img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+  }
+  .capture-frame .placeholder {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: var(--gris-text);
+    font-size: 16px;
+    text-align: center;
+    line-height: 1.45;
+  }
+  .capture-double {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+    align-items: start;
+  }
+  .capture-double .col {
+    background: var(--gris-claro);
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+    min-width: 0;
+    min-height: 0;
+  }
+  .capture-double .col h4 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .capture-double .col .capture-frame { margin-top: 0; width: 100%; }
+  /* Alturas de marco (la imagen escala con object-fit dentro del alto fijo) */
+  .h-cap-sm { height: 320px; box-sizing: border-box; }
+  .h-cap-md { height: 420px; box-sizing: border-box; }
+  .h-cap-lg { height: 500px; box-sizing: border-box; }
+
+  /*
+   * Slides con mucho KPI + capturas: el slide mide 1080px y overflow:hidden
+   * recortaba la parte inferior. .slide--fill + .fill-grow reparten el alto:
+   * las capturas crecen (height:auto) solo en el espacio que sobra.
+   */
+  .slide.slide--fill {
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.slide--fill > .fill-grow {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.slide--fill .capture-double {
+    flex: 1 1 0;
+    min-height: 0;
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  .slide.slide--fill .capture-double .col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+  }
+  .slide.slide--fill .capture-double .col .capture-frame {
+    flex: 1 1 auto;
+    min-height: 120px;
+    height: auto !important;
+  }
+  .slide.slide--fill .compare {
+    flex: 1 1 0;
+    min-height: 0;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  .slide.slide--fill .compare .col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+  }
+  .slide.slide--fill .compare .col h3 {
+    flex-shrink: 0;
+    margin-bottom: 6px;
+  }
+  .slide.slide--fill .compare .col .img-wrap {
+    flex: 1 1 auto;
+    min-height: 120px;
+    height: auto !important;
+  }
+  /* Publicación: bloque superior alto → scroll interno, capturas al resto */
+  .slide.slide--fill.slide--pub .pub-scroll {
+    flex: 0 1 auto;
+    max-height: 340px;
+    overflow: auto;
+    min-height: 0;
+  }
+  .slide.slide--fill.slide--pub .capture-double {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+  /* Web: tabla compacta para dejar aire a las gráficas */
+  .slide.slide--fill.slide--web .web-stack-top {
+    flex: 0 0 auto;
+  }
+  .slide.slide--fill.slide--web .capture-frame.web-cap-wide {
+    position: relative;
+    flex: 0 1 auto;
+    min-height: 90px;
+    max-height: 170px;
+    width: 100%;
+    height: auto !important;
+  }
+  .slide.slide--fill.slide--web .web-list--fit {
+    flex: 0 0 auto;
+    max-height: 160px;
+  }
+  /* Perfil — Contenido: grilla bajo cabecera flexible */
+  .slide.slide--fill.slide--luciana-grid .fill-grow > .lc-grid {
+    flex: 1 1 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+  .slide.slide--fill.slide--luciana-grid .lc-col-text {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+  }
+  .slide.slide--fill.slide--luciana-grid .lc-grid > .lc-col-cap {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+  }
+  .slide.slide--fill.slide--luciana-grid .lc-grid .capture-frame {
+    flex: 1 1 auto;
+    min-height: 120px;
+    height: auto !important;
+  }
+
+  /* -------------------------------------------------------------------------
+   * Hoja de capturas (2ª diapositiva): casi todo el alto para las imágenes.
+   * Mejor legibilidad en PDF que KPI + captura en un solo 16:9.
+   * ------------------------------------------------------------------------- */
+  .slide.slide--sheet {
+    display: flex;
+    flex-direction: column;
+    padding-top: 44px;
+    padding-bottom: 40px;
+  }
+  .slide.slide--sheet .sheet-ribbon {
+    flex: 0 0 auto;
+    margin-bottom: 6px;
+  }
+  .slide.slide--sheet .sheet-ribbon h2 {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    color: #0f172a;
+  }
+  .slide.slide--sheet .sheet-ribbon .subtitle {
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 300;
+    color: #1e293b;
+  }
+  .slide.slide--sheet .sheet-body {
+    flex: 1 1 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 6px;
+  }
+  .slide.slide--sheet .sheet-body.sheet-web {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .slide.slide--sheet .sheet-body.sheet-web > .sheet-cell.sheet-row-full {
+    grid-column: 1 / -1;
+  }
+  .slide.slide--sheet .sheet-body.sheet-body--single {
+    grid-template-columns: 1fr;
+  }
+  .slide.slide--sheet .sheet-cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    background: var(--gris-claro);
+    border-radius: 14px;
+    padding: 10px 12px 12px;
+  }
+  .slide.slide--sheet .sheet-cell h4 {
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--verde-cmp-osc);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .slide.slide--sheet .sheet-cap {
+    flex: 1 1 0;
+    min-height: 280px;
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--gris-medio);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .slide.slide--sheet .sheet-cap.sheet-cap--short {
+    flex: 0 1 auto;
+    min-height: 200px;
+    max-height: 360px;
+  }
+  .slide.slide--sheet .sheet-cap img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+  }
+  .slide.slide--sheet .sheet-cap .placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--gris-text);
+    line-height: 1.45;
+  }
+
+  /* Publicación — solo texto: más alto útil antes del slide de capturas */
+  .slide.slide--pub-metrics {
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.slide--pub-metrics .pub-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 12px;
+    max-height: 760px;
+    overflow: auto;
+  }
+
   .card {
     background: var(--gris-claro);
     border-radius: 12px;
@@ -306,7 +957,8 @@
   .wa-banner { text-align: center; font-size: 40px; font-weight: 800; margin: 30px 0 30px; }
   .wa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
   .wa-card { background: #0f172a; color: white; border-radius: 12px; padding: 26px 22px; text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; }
-  .wa-card .badge { background: white; color: var(--verde-cmp-osc); border-radius: 50%; width: 100px; height: 100px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; text-align: center; padding: 12px; line-height: 1.1; }
+  .wa-card .badge { background: white; border-radius: 50%; width: 110px; height: 110px; margin: 0 auto; display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .wa-card .badge img { width: 100%; height: auto; object-fit: contain; }
   .wa-card .name { font-size: 18px; font-weight: 600; line-height: 1.3; margin-top: 14px; }
   .wa-card .members { font-size: 15px; color: var(--gris-medio); margin-top: 10px; }
 
@@ -319,6 +971,16 @@
   .web-kpi.k2 { background: var(--verde-cmp); }
   .web-kpi.k3 { background: var(--naranja); }
   .web-list { background: var(--gris-claro); border-radius: 12px; padding: 22px; margin-top: 18px; }
+  .web-list--fit {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 12px;
+    padding: 14px 16px;
+  }
+  .web-list--fit .item { padding: 8px 0; }
+  .web-list--fit .item .ttl { font-size: 15px; }
+  .web-list--fit .item .url { font-size: 11px; }
+  .web-list--fit .item .clics { font-size: 18px; }
   .web-list .item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--gris-medio); }
   .web-list .item:last-child { border-bottom: 0; }
   .web-list .item .ttl { font-size: 17px; font-weight: 700; }
@@ -388,28 +1050,6 @@
   }
   .person .info .name { font-size: 32px; font-weight: 800; }
   .person .info .role { font-size: 18px; color: var(--gris-text); }
-
-  /* ===== Print ===== */
-  @page { size: 1920px 1080px; margin: 0; }
-  @media print {
-    html, body {
-      background: white;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    .slide {
-      margin: 0;
-      box-shadow: none;
-      page-break-after: always;
-      /* Asegura que cada slide ocupe una página completa */
-      break-after: page;
-    }
-    .toolbar { display: none !important; }
-  }
 
   /* ===== Banner de revisión ===== */
   .review-banner {
@@ -538,9 +1178,24 @@
     font-weight: 600;
   }
 
-  /* ===== Print ya definido arriba sigue funcionando ===== */
+  /* ===== Impresión / PDF (Cmd+P → Guardar como PDF) =====
+     Las capturas deben encajar en el marco sin scroll: el PDF no imprime bien
+     el interior de cajas con overflow:auto. */
+  @page { size: 1920px 1080px; margin: 0; }
   @media print {
+    html, body {
+      background: white !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
     .review-banner, .review-hint, .comment-box { display: none !important; }
+    .toolbar { display: none !important; }
+    .slide-number { display: none !important; }
+
     .slide-wrap {
       box-shadow: none !important;
       border-radius: 0 !important;
@@ -549,8 +1204,50 @@
       width: 1920px !important;
       height: 1080px !important;
     }
-    .slide { transform: none !important; }
-    .slide-number { display: none !important; }
+    .slide {
+      margin: 0 !important;
+      box-shadow: none !important;
+      transform: none !important;
+      overflow: hidden !important;
+      page-break-after: always;
+      break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    :root {
+      --img-compare-h: 360px;
+    }
+    .h-cap-sm { height: 300px !important; }
+    .h-cap-md { height: 380px !important; }
+    .h-cap-lg { height: 440px !important; }
+
+    .capture-frame,
+    .compare .col .img-wrap,
+    .slide.slide--sheet .sheet-cap {
+      overflow: hidden !important;
+    }
+
+    .capture-frame img,
+    .compare .col .img-wrap img,
+    .slide.slide--sheet .sheet-cap img,
+    .slide-cover .laptop img {
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+    }
+    .slide-cover .laptop img {
+      object-position: center right !important;
+    }
+
+    .web-list--fit {
+      max-height: 220px !important;
+      overflow: hidden !important;
+    }
   }
 </style>
 </head>
@@ -576,12 +1273,107 @@
 </div>
 
 {# ============================================================ Slide - Portada #}
-<section class="slide">
+<section class="slide slide-cover">
+  <div class="laptop">
+    <img src="{{ cover_laptop_uri }}" alt="">
+  </div>
   <div class="cover">
-    <div class="deco"></div>
     <h1 class="title-xl">Reporte<br>métricas<br>RRSS</h1>
     <div class="subtitle">{{ d.mes_label }}</div>
     <img class="logo-cover" src="{{ logo_uri }}" alt="Cámara de Medios de Pago">
+  </div>
+</section>
+
+{# ============================================================ En foco — una slide (sin capturas) #}
+<section class="slide slide--exec-dash">
+  <div class="exec-dash-bar">
+    <div class="exec-dash-kicker">En foco</div>
+    <div class="exec-dash-title">{{ d.mes_label }}</div>
+    <div class="exec-dash-sub">Cuatro números clave, tres lecturas del mes y dos acciones. El detalle y las capturas vienen después.</div>
+  </div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="exec-dash-body">
+    <div class="exec-dash-kpi-row">
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Interacciones · página LinkedIn</div>
+        <div class="dk-v">{{ fmt_num(totales.contenidos.actual) }}</div>
+        <div class="dk-d delta {{ delta_class(deltas.interacciones_total) }}">{{ delta_str(deltas.interacciones_total) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Nuevos seguidores · página</div>
+        <div class="dk-v">{{ fmt_num(d.seguidores.actual.nuevos) }}</div>
+        <div class="dk-d delta {{ delta_class(deltas.seguidores_nuevos) }}">{{ delta_str(deltas.seguidores_nuevos) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Clics · Search Console</div>
+        <div class="dk-v">{{ fmt_num(d.web.search_console.clics) }}</div>
+        {% set wv = d.web.search_console.clics_var_pct or 0 %}
+        <div class="dk-d delta {% if wv > 0 %}up{% elif wv < 0 %}down{% else %}flat{% endif %}">
+          {% if wv > 0 %}▲{% elif wv < 0 %}▼{% else %}▸{% endif %} {{ wv|abs }}% vs {{ d.mes_anterior_label }}
+        </div>
+      </div>
+      {% if d.visitantes_pagina %}
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Visitantes únicos · página</div>
+        <div class="dk-v">{{ fmt_num(d.visitantes_pagina.actual.visitantes_unicos) }}</div>
+        <div class="dk-d delta {{ delta_class(deltas.visit_unique) }}">{{ delta_str(deltas.visit_unique) }} vs {{ d.mes_anterior_label }}</div>
+      </div>
+      {% elif d.luciana %}
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Interacciones · perfil ejecutivo</div>
+        <div class="dk-v">{{ fmt_num(d.luciana.interaccion.actual.sociales_total) }}</div>
+        {% if d.luciana.interaccion.anterior and deltas.luc_interacciones is not none %}
+        <div class="dk-d delta {{ delta_class(deltas.luc_interacciones) }}">{{ delta_str(deltas.luc_interacciones) }} vs {{ d.mes_anterior_label }}</div>
+        {% else %}
+        <div class="dk-d delta flat">Sin comparación</div>
+        {% endif %}
+      </div>
+      {% elif d.youtube and d.youtube.actual %}
+      <div class="exec-dash-kpi">
+        <div class="dk-l">Vistas · YouTube</div>
+        <div class="dk-v">{{ fmt_num(d.youtube.actual.vistas) }}</div>
+        {% if d.youtube.anterior and deltas.yt_vistas is not none %}
+        <div class="dk-d delta {{ delta_class(deltas.yt_vistas) }}">{{ delta_str(deltas.yt_vistas) }} vs {{ d.mes_anterior_label }}</div>
+        {% else %}
+        <div class="dk-d delta flat">Sin comparación</div>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="exec-dash-kpi exec-dash-kpi--muted">
+        <div class="dk-l">Cuarto indicador</div>
+        <div class="dk-v">—</div>
+        <div class="dk-d delta flat">Sin dato este mes</div>
+      </div>
+      {% endif %}
+    </div>
+    <div class="exec-dash-split">
+      <div class="exec-dash-panel-paso">
+        <h3 class="exec-dash-h3">Qué pasó</h3>
+        <p class="exec-dash-hint">
+          Tres lecturas de los KPIs de arriba. Las editás en <code>ejecutivo.puntos</code> en <code>datos.yaml</code>.
+        </p>
+        <ul class="exec-dash-puntos">
+          {% for p in d.ejecutivo.puntos %}
+          <li>{{ p|safe }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="exec-dash-panel-hacer">
+        <h3 class="exec-dash-h3">Qué hacer</h3>
+        <p class="exec-dash-hint">
+          Dos prioridades para el próximo ciclo (a partir de oportunidades). Las editás en
+          <code>ejecutivo.acciones</code> en <code>datos.yaml</code>.
+        </p>
+        <div class="exec-dash-actions-grid">
+          {% for a in d.ejecutivo.acciones %}
+          <article class="exec-dash-act-card">
+            <div class="exec-dash-act-num" aria-hidden="true">{{ loop.index }}</div>
+            <div class="exec-dash-act-text">{{ a|safe }}</div>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -591,46 +1383,103 @@
   <div class="subtitle">Definiciones de las métricas usadas en este informe</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div class="glosario-grid">
+  <div class="gloss-intro">
+    <p style="margin-bottom: 12px;">
+    Los términos del glosario van <strong>numerados del 1 al 10</strong>. Los primeros ítems (1 a 8) describen métricas de
+    <strong>LinkedIn</strong>: en casi todos los casos de la <strong>página institucional de la Cámara</strong>, salvo
+    donde se indica explícitamente el <strong>perfil personal</strong>.
+    </p>
+    <p style="margin-bottom: 12px;">
+    <strong>Orden del informe (referencia):</strong> portada; una diapositiva
+    <strong>En foco</strong> (números clave, lectura breve y acciones, sin capturas); luego el
+    <strong>glosario</strong> y las secciones de
+    <strong>LinkedIn — página de la Cámara</strong> (Contenidos, publicación destacada, seguidores, visitantes de la página);
+    luego <strong>YouTube</strong> (canal institucional). Las diapositivas tituladas <strong>«Perfil ejecutivo»</strong> y
+    <strong>«Perfil — Contenido»</strong> corresponden al <strong>perfil personal de LinkedIn</strong>
+    {% if 'luciana' in d and d.luciana %}de <strong>{{ d.luciana.perfil.nombre }}</strong>{% endif %}, no a la página de la Cámara.
+    Cierran <strong>WhatsApp</strong>, <strong>Web (Search Console)</strong> y las conclusiones.
+    </p>
+    <p style="margin-bottom: 12px;">
+    Las métricas de <strong>Contenidos, Publicación destacada, Seguidores y Visitantes</strong> son siempre de la
+    <strong>página de LinkedIn de la Cámara de Medios de Pago</strong> (cuenta institucional), para no confundirlas con YouTube ni con la web.
+    </p>
+    <p>
+    <strong>YouTube</strong> refiere al canal institucional de la Cámara.
+    <strong>Web</strong> refiere a métricas de <strong>Google Search Console</strong> del sitio
+    <a href="https://camarademediosdepago.ar/" style="color: var(--verde-cmp-osc);">camarademediosdepago.ar</a>.
+    </p>
+  </div>
+
+  <div class="glosario-grid" style="margin-top: 22px;">
     <div class="gloss-item">
-      <div class="term">Alcance / Miembros alcanzados</div>
-      <div class="def">Cantidad de personas únicas que vieron una publicación al menos una vez.</div>
+      <span class="gloss-num">1</span>
+      <div class="gloss-body">
+        <div class="term">Alcance / Miembros alcanzados <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Personas únicas que vieron una publicación al menos una vez.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Interacciones sociales</div>
-      <div class="def">Suma de reacciones, comentarios, veces compartido, guardados y envíos.</div>
+      <span class="gloss-num">2</span>
+      <div class="gloss-body">
+        <div class="term">Interacciones sociales <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Suma de reacciones, comentarios, veces compartido, guardados y envíos en LinkedIn.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Reacciones</div>
-      <div class="def">Likes, "me gusta" y demás reacciones positivas a una publicación.</div>
+      <span class="gloss-num">3</span>
+      <div class="gloss-body">
+        <div class="term">Reacciones <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Likes y demás reacciones a una publicación.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Veces compartido</div>
-      <div class="def">Cantidad de veces que un usuario compartió la publicación en su red.</div>
+      <span class="gloss-num">4</span>
+      <div class="gloss-body">
+        <div class="term">Veces compartido <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Veces que un usuario compartió la publicación en su red.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Veces guardado</div>
-      <div class="def">Usuarios que guardaron el contenido para verlo más tarde.</div>
+      <span class="gloss-num">5</span>
+      <div class="gloss-body">
+        <div class="term">Veces guardado <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Usuarios que guardaron el contenido para verlo más tarde.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Envíos en LinkedIn</div>
-      <div class="def">Veces que la publicación se compartió por mensaje privado dentro de LinkedIn.</div>
+      <span class="gloss-num">6</span>
+      <div class="gloss-body">
+        <div class="term">Envíos en LinkedIn <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Veces que la publicación se compartió por mensaje privado dentro de LinkedIn.</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Tasa de interacción</div>
-      <div class="def">Interacciones sobre alcance, expresado en porcentaje. Mide el "engagement".</div>
+      <span class="gloss-num">7</span>
+      <div class="gloss-body">
+        <div class="term">Tasa de interacción <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn)</span></div>
+        <div class="def">Interacciones sobre alcance, en porcentaje (engagement).</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Visitantes únicos</div>
-      <div class="def">Personas distintas que visitaron la página de LinkedIn de la Cámara.</div>
+      <span class="gloss-num">8</span>
+      <div class="gloss-body">
+        <div class="term">Visitantes únicos <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(LinkedIn · página CMP)</span></div>
+        <div class="def">Personas distintas que visitaron la página de LinkedIn de la Cámara (no el perfil personal).</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">CTR (Search Console / YouTube)</div>
-      <div class="def">Porcentaje de impresiones que se convirtieron en clics o vistas.</div>
+      <span class="gloss-num">9</span>
+      <div class="gloss-body">
+        <div class="term">CTR <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(YouTube / Search Console)</span></div>
+        <div class="def">Porcentaje de impresiones que se convirtieron en clics o vistas (según la plataforma).</div>
+      </div>
     </div>
     <div class="gloss-item">
-      <div class="term">Posición media (Search Console)</div>
-      <div class="def">Posición promedio en los resultados de Google para las búsquedas registradas.</div>
+      <span class="gloss-num">10</span>
+      <div class="gloss-body">
+        <div class="term">Posición media <span style="font-size:14px;font-weight:600;color:var(--gris-text);">(Search Console)</span></div>
+        <div class="def">Posición promedio en resultados de Google para las búsquedas registradas.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -638,10 +1487,10 @@
 {# ============================================================ Slide - Contenidos #}
 <section class="slide">
   <h2 class="title-lg">Contenidos</h2>
-  <div class="subtitle">{{ d.mes_label }} · LinkedIn — Cámara de Medios de Pago</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara de Medios de Pago</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 16px;">
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
@@ -656,54 +1505,80 @@
     </div>
   </div>
 
-  <div class="kpi-row" style="margin-top: 26px;">
+  <div class="kpi-row" style="margin-top: 12px; grid-template-columns: repeat(5, 1fr); gap: 12px;">
     <div class="kpi">
       <div class="label">Reacciones</div>
-      <div class="value">{{ fmt_num(d.contenidos.actual.reacciones) }}</div>
+      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.reacciones) }}</div>
       <div class="delta {{ delta_class(deltas.rea) }}">{{ delta_str(deltas.rea) }}</div>
     </div>
     <div class="kpi">
       <div class="label">Comentarios</div>
-      <div class="value">{{ fmt_num(d.contenidos.actual.comentarios) }}</div>
+      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.comentarios) }}</div>
       <div class="delta {{ delta_class(deltas.com) }}">{{ delta_str(deltas.com) }}</div>
     </div>
     <div class="kpi">
       <div class="label">Compartidos</div>
-      <div class="value">{{ fmt_num(d.contenidos.actual.compartidos) }}</div>
+      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.compartidos) }}</div>
       <div class="delta {{ delta_class(deltas.share) }}">{{ delta_str(deltas.share) }}</div>
     </div>
     <div class="kpi">
       <div class="label">Guardados</div>
-      <div class="value">{{ fmt_num(d.contenidos.actual.guardados) }}</div>
+      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.guardados) }}</div>
+      <div class="delta flat"></div>
+    </div>
+    <div class="kpi">
+      <div class="label">Envíos en LinkedIn</div>
+      <div class="value" style="font-size: 40px;">{{ fmt_num(d.contenidos.actual.envios) }}</div>
       <div class="delta flat"></div>
     </div>
   </div>
-  <div class="kpi-row" style="grid-template-columns: 1fr; margin-top: 6px;">
-    <div class="kpi">
-      <div class="label">Envíos en LinkedIn</div>
-      <div class="value" style="font-size: 38px;">{{ fmt_num(d.contenidos.actual.envios) }}</div>
+</section>
+
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Contenidos · capturas</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — datos destacados · {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>Datos destacados · {{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.contenidos_destacados_anterior %}
+          <img src="{{ capturas.contenidos_destacados_anterior }}" alt="">
+        {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_anterior en capturas/</div>{% endif %}
+      </div>
+    </div>
+    <div class="sheet-cell">
+      <h4>Datos destacados · {{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.contenidos_destacados_actual %}
+          <img src="{{ capturas.contenidos_destacados_actual }}" alt="">
+        {% else %}<div class="placeholder">Pendiente: 02_contenidos_destacados_actual en capturas/</div>{% endif %}
+      </div>
     </div>
   </div>
 </section>
 
 {# ============================================================ Slide - Publicación top #}
 {% if d.publicacion_top and d.publicacion_top.interaccion.interacciones %}
-<section class="slide">
+<section class="slide slide--pub-metrics">
   <h2 class="title-lg">Publicación destacada</h2>
-  <div class="subtitle">{{ d.mes_label }} · Contenido con mejor rendimiento</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara · contenido con mejor rendimiento</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 24px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px;">
+  <div class="pub-scroll">
+  <div style="margin-top: 12px; display: grid; grid-template-columns: 1.05fr 1fr; gap: 20px;">
     <div>
       <div class="card">
         <h3>Análisis de la publicación</h3>
         <div style="font-size: 20px; line-height: 1.4; color: #334155;">{{ d.publicacion_top.descripcion }}</div>
       </div>
-      <div class="card" style="margin-top: 18px;">
+      <div class="card" style="margin-top: 14px;">
         <h3>Alcance</h3>
         <div class="row"><span class="l">Miembros alcanzados</span><span class="v">{{ fmt_num(d.publicacion_top.alcance.miembros_alcanzados) }}</span></div>
       </div>
-      <div class="card" style="margin-top: 18px;">
+      <div class="card" style="margin-top: 14px;">
         <h3>Actividad orgánica de la página</h3>
         <div class="row"><span class="l">Visualizaciones de la página</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.visualizaciones_pagina) }}</span></div>
         <div class="row"><span class="l">Seguidores obtenidos</span><span class="v">{{ fmt_num(d.publicacion_top.actividad.seguidores_obtenidos) }}</span></div>
@@ -718,7 +1593,7 @@
           <div class="delta flat">Tasa {{ d.publicacion_top.interaccion.tasa_interaccion_pct }}%</div>
         </div>
       </div>
-      <div class="card" style="margin-top: 18px;">
+      <div class="card" style="margin-top: 14px;">
         <h3>Detalle de interacción</h3>
         <div class="row"><span class="l">Clics</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.clics) }}</span></div>
         <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(d.publicacion_top.interaccion.reacciones) }}</span></div>
@@ -729,16 +1604,47 @@
       </div>
     </div>
   </div>
+  </div>
+</section>
+
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Publicación destacada · capturas</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — análisis de la publicación y descubrimiento orgánico</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>Vista principal del análisis</h4>
+      <div class="sheet-cap">
+        {% if capturas.publicacion_top %}
+          <img src="{{ capturas.publicacion_top }}" alt="">
+        {% else %}
+          <div class="placeholder">Pendiente: 03_publicacion_top en capturas/</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="sheet-cell">
+      <h4>Descubrimiento orgánico</h4>
+      <div class="sheet-cap">
+        {% if capturas.publicacion_descubrimiento %}
+          <img src="{{ capturas.publicacion_descubrimiento }}" alt="">
+        {% else %}
+          <div class="placeholder">Pendiente: descubrimiento_organico en capturas/</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </section>
 {% endif %}
 
 {# ============================================================ Slide - Seguidores #}
 <section class="slide">
   <h2 class="title-lg">Seguidores</h2>
-  <div class="subtitle">{{ d.mes_label }} · Cámara de Medios de Pago</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — página de la Cámara de Medios de Pago</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 16px;">
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
@@ -753,7 +1659,7 @@
     </div>
   </div>
 
-  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 30px;">
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 16px;">
     <div class="kpi">
       <div class="label">Total de seguidores · {{ d.mes_label }}</div>
       <div class="value">{{ fmt_num(d.seguidores.actual.total) }}</div>
@@ -764,11 +1670,18 @@
       <div class="value">{{ fmt_num(d.seguidores.anterior.total) }}</div>
     </div>
   </div>
+</section>
 
-  <div class="compare" style="margin-top: 24px;">
-    <div class="col">
-      <h3>Captura · {{ d.mes_anterior_label }}</h3>
-      <div class="img-wrap">
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Seguidores · capturas</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
         {% if capturas.seguidores_anterior %}
           <img src="{{ capturas.seguidores_anterior }}" alt="">
         {% else %}
@@ -776,9 +1689,9 @@
         {% endif %}
       </div>
     </div>
-    <div class="col">
-      <h3>Captura · {{ d.mes_label }}</h3>
-      <div class="img-wrap">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_label }}</h4>
+      <div class="sheet-cap">
         {% if capturas.seguidores_actual %}
           <img src="{{ capturas.seguidores_actual }}" alt="">
         {% else %}
@@ -793,10 +1706,10 @@
 {% if d.visitantes_pagina %}
 <section class="slide">
   <h2 class="title-lg">Visitantes</h2>
-  <div class="subtitle">{{ d.mes_label }} · Análisis de la página de LinkedIn</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — análisis de la página de la Cámara (no perfil personal)</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 16px;">
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
@@ -811,7 +1724,7 @@
     </div>
   </div>
 
-  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 26px;">
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 16px;">
     <div class="kpi">
       <div class="label">Visualizaciones de la página</div>
       <div class="value">{{ fmt_num(d.visitantes_pagina.actual.visualizaciones) }}</div>
@@ -822,19 +1735,26 @@
       <div class="value">{{ fmt_num(d.visitantes_pagina.actual.clics_boton) }}</div>
     </div>
   </div>
+</section>
 
-  <div class="compare" style="margin-top: 20px;">
-    <div class="col">
-      <h3>Captura · {{ d.mes_anterior_label }}</h3>
-      <div class="img-wrap" style="height: 220px;">
-        {% if capturas.visitantes_anterior %}<img src="{{ capturas.visitantes_anterior }}">
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Visitantes · capturas</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.visitantes_anterior %}<img src="{{ capturas.visitantes_anterior }}" alt="">
         {% else %}<div class="placeholder">Sin captura</div>{% endif %}
       </div>
     </div>
-    <div class="col">
-      <h3>Captura · {{ d.mes_label }}</h3>
-      <div class="img-wrap" style="height: 220px;">
-        {% if capturas.visitantes_actual %}<img src="{{ capturas.visitantes_actual }}">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.visitantes_actual %}<img src="{{ capturas.visitantes_actual }}" alt="">
         {% else %}<div class="placeholder">Sin captura</div>{% endif %}
       </div>
     </div>
@@ -849,7 +1769,7 @@
   <div class="subtitle">{{ d.mes_label }} · Canal de la Cámara de Medios de Pago</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 16px;">
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
@@ -870,7 +1790,7 @@
     </div>
   </div>
 
-  <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); margin-top: 26px;">
+  <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); margin-top: 14px;">
     <div class="kpi">
       <div class="label">Suscriptores totales</div>
       <div class="value">{{ fmt_num(d.youtube.actual.suscriptores_total) }}</div>
@@ -895,16 +1815,41 @@
     </div>
   </div>
 </section>
+
+{% if capturas.youtube_anterior or capturas.youtube_actual %}
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>YouTube · capturas</h2>
+    <div class="subtitle"><strong>YouTube Studio</strong> — {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.youtube_anterior %}<img src="{{ capturas.youtube_anterior }}" alt="">{% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+    <div class="sheet-cell">
+      <h4>{{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.youtube_actual %}<img src="{{ capturas.youtube_actual }}" alt="">{% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% endif %}
 
 {# ============================================================ Slide - Luciana / Perfil #}
 {% if d.luciana %}
 <section class="slide">
   <h2 class="title-lg">Perfil ejecutivo</h2>
-  <div class="subtitle">{{ d.mes_label }} · {{ d.luciana.perfil.nombre }}</div>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — perfil personal de {{ d.luciana.perfil.nombre }} (no la página de la Cámara)</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div class="person">
+  <div class="person" style="margin-top: 8px;">
     <div class="avatar">{{ d.luciana.perfil.nombre|first }}</div>
     <div class="info">
       <div class="name">{{ d.luciana.perfil.nombre }}</div>
@@ -912,7 +1857,7 @@
     </div>
   </div>
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 12px;">
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
@@ -931,7 +1876,7 @@
     </div>
   </div>
 
-  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 26px;">
+  <div class="kpi-row" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
     <div class="kpi">
       <div class="label">Total de seguidores</div>
       <div class="value">{{ fmt_num(d.luciana.seguidores.actual.total) }}</div>
@@ -946,36 +1891,159 @@
   </div>
 </section>
 
-{# ============================================================ Slide - Luciana / Contenido + Top posts #}
-<section class="slide">
-  <h2 class="title-lg">Perfil — Contenido</h2>
-  <div class="subtitle">{{ d.mes_label }} · Publicaciones de {{ d.luciana.perfil.nombre }}</div>
+{% if capturas.luciana_perfil_anterior or capturas.luciana_perfil_actual %}
+<section class="slide slide--sheet">
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
-
-  <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
-    <div class="card">
-      <h3>Detalle de interacción</h3>
-      <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.reacciones) }}</span></div>
-      <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.comentarios) }}</span></div>
-      <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.compartidos) }}</span></div>
-      <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.guardados) }}</span></div>
-      <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.envios) }}</span></div>
-      <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(d.luciana.interaccion.actual.visitas_enlace) }}</span></div>
-    </div>
-    <div>
-      <h3 style="font-size: 24px; color: var(--verde-cmp-osc); margin-bottom: 14px;">Publicaciones con mejor rendimiento</h3>
-      {% for p in d.luciana.publicaciones_top %}
-      <div class="card" style="margin-bottom: 14px; padding: 16px 20px;">
-        <div style="font-size: 17px; line-height: 1.4; margin-bottom: 8px;">{{ p.texto }}</div>
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-          <span style="font-size: 14px; color: var(--gris-text); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Interacciones</span>
-          <span style="font-size: 28px; font-weight: 900; color: var(--verde-cmp-osc);">{{ p.interacciones }}</span>
-        </div>
+  <div class="sheet-ribbon">
+    <h2>Perfil ejecutivo · capturas</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — {{ d.luciana.perfil.nombre }} · {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.luciana_perfil_anterior %}
+          <img src="{{ capturas.luciana_perfil_anterior }}" alt="">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
       </div>
-      {% endfor %}
+    </div>
+    <div class="sheet-cell">
+      <h4>{{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.luciana_perfil_actual %}
+          <img src="{{ capturas.luciana_perfil_actual }}" alt="">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
     </div>
   </div>
 </section>
+{% endif %}
+
+{# Luciana — panel Interacción (capturas comparativas) #}
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Perfil ejecutivo · panel «Interacción»</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — {{ d.luciana.perfil.nombre }} · {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cell">
+      <h4>{{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.luciana_interaccion %}
+          <img src="{{ capturas.luciana_interaccion }}" alt="">
+        {% else %}
+          <div class="placeholder">Pendiente: 09_luciana_interaccion (panel Interacción del mes anterior)</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="sheet-cell">
+      <h4>{{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.luciana_interaccion_actual %}
+          <img src="{{ capturas.luciana_interaccion_actual }}" alt="">
+        {% else %}
+          <div class="placeholder">Pendiente: 09_luciana_interaccion_actual — mismo panel «Interacción» del mes en curso</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================================================ Slide - Luciana / Contenido + Top posts #}
+{% if capturas.luciana_top %}
+<section class="slide">
+  <h2 class="title-lg">Perfil — Contenido</h2>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — perfil personal · publicaciones de {{ d.luciana.perfil.nombre }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div class="card" style="margin-top: 18px; max-width: 1100px;">
+    <h3>Detalle de interacción</h3>
+    {% set act = d.luciana.interaccion.actual %}
+    {% set suma_det = (act.reacciones|default(0, true)) + (act.comentarios|default(0, true)) + (act.compartidos|default(0, true)) + (act.guardados|default(0, true)) + (act.envios|default(0, true)) + (act.visitas_enlace|default(0, true)) %}
+    {% if act.sociales_total and suma_det == 0 %}
+    <p style="font-size: 18px; line-height: 1.45; color: #334155;">
+      <strong>Total de interacciones sociales del mes:</strong> {{ fmt_num(act.sociales_total) }}.
+      El desglose por tipo (reacciones, comentarios, etc.) debe tomarse del panel
+      <strong>«Interacción»</strong> de LinkedIn — subí la captura
+      <code style="font-size:14px;">09_luciana_interaccion_actual.jpg</code> en <code style="font-size:14px;">capturas/</code>
+      para que coincida con lo que muestra la red (evitar valores en cero que no reflejan el panel).
+    </p>
+    {% else %}
+    <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(act.reacciones) }}</span></div>
+    <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(act.comentarios) }}</span></div>
+    <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(act.compartidos) }}</span></div>
+    <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(act.guardados) }}</span></div>
+    <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(act.envios) }}</span></div>
+    <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(act.visitas_enlace) }}</span></div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Perfil — Contenido · captura</h2>
+    <div class="subtitle"><strong>LinkedIn</strong> — publicaciones con mejor rendimiento · {{ d.luciana.perfil.nombre }}</div>
+  </div>
+  <div class="sheet-body sheet-body--single">
+    <div class="sheet-cell">
+      <h4>Publicaciones con mejor rendimiento</h4>
+      <div class="sheet-cap">
+        <img src="{{ capturas.luciana_top }}" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+{% else %}
+<section class="slide slide--fill slide--luciana-grid">
+  <h2 class="title-lg">Perfil — Contenido</h2>
+  <div class="subtitle">{{ d.mes_label }} · <strong>LinkedIn</strong> — perfil personal · publicaciones de {{ d.luciana.perfil.nombre }}</div>
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+
+  <div class="fill-grow" style="margin-top: 10px;">
+  <div class="lc-grid">
+    <div class="lc-col-text">
+      <div class="card">
+      <h3>Detalle de interacción</h3>
+      {% set act = d.luciana.interaccion.actual %}
+      {% set suma_det = (act.reacciones|default(0, true)) + (act.comentarios|default(0, true)) + (act.compartidos|default(0, true)) + (act.guardados|default(0, true)) + (act.envios|default(0, true)) + (act.visitas_enlace|default(0, true)) %}
+      {% if act.sociales_total and suma_det == 0 %}
+      <p style="font-size: 18px; line-height: 1.45; color: #334155;">
+        <strong>Total de interacciones sociales del mes:</strong> {{ fmt_num(act.sociales_total) }}.
+        El desglose por tipo (reacciones, comentarios, etc.) debe tomarse del panel
+        <strong>«Interacción»</strong> de LinkedIn — subí la captura
+        <code style="font-size:14px;">09_luciana_interaccion_actual.jpg</code> en <code style="font-size:14px;">capturas/</code>
+        para que coincida con lo que muestra la red (evitar valores en cero que no reflejan el panel).
+      </p>
+      {% else %}
+      <div class="row"><span class="l">Reacciones</span><span class="v">{{ fmt_num(act.reacciones) }}</span></div>
+      <div class="row"><span class="l">Comentarios</span><span class="v">{{ fmt_num(act.comentarios) }}</span></div>
+      <div class="row"><span class="l">Compartidos</span><span class="v">{{ fmt_num(act.compartidos) }}</span></div>
+      <div class="row"><span class="l">Guardados</span><span class="v">{{ fmt_num(act.guardados) }}</span></div>
+      <div class="row"><span class="l">Envíos en LinkedIn</span><span class="v">{{ fmt_num(act.envios) }}</span></div>
+      <div class="row"><span class="l">Visitas a enlaces</span><span class="v">{{ fmt_num(act.visitas_enlace) }}</span></div>
+      {% endif %}
+      </div>
+    </div>
+    <div class="lc-col-cap">
+      <h3 style="font-size: 22px; color: var(--verde-cmp-osc); margin-bottom: 10px; flex-shrink: 0;">Publicaciones con mejor rendimiento</h3>
+      <div style="flex: 1; min-height: 0; overflow: auto;">
+      {% for p in d.luciana.publicaciones_top %}
+      <div class="card" style="margin-bottom: 10px; padding: 14px 18px;">
+        <div style="font-size: 16px; line-height: 1.4; margin-bottom: 6px;">{{ p.texto }}</div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 13px; color: var(--gris-text); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Interacciones</span>
+          <span style="font-size: 24px; font-weight: 900; color: var(--verde-cmp-osc);">{{ p.interacciones }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+{% endif %}
 {% endif %}
 
 {# ============================================================ Slide - WhatsApp #}
@@ -984,12 +2052,18 @@
   <div class="subtitle">{{ d.mes_label }}</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
+  {% if d.whatsapp.nota_mes %}
+  <div class="gloss-intro" style="margin-top: 20px; border-left-color: #f59e0b;">
+    <strong>Nota:</strong> {{ d.whatsapp.nota_mes }}
+  </div>
+  {% endif %}
+
   <div class="wa-banner">{{ d.whatsapp.grupos|length }} GRUPOS ACTIVOS · {{ d.whatsapp.grupos|sum(attribute='miembros') }} miembros</div>
   <div class="wa-grid">
     {% for g in d.whatsapp.grupos %}
     <div class="wa-card">
       <div>
-        <div class="badge">CÁMARA<br>DE MEDIOS<br>DE PAGO</div>
+        <div class="badge"><img src="{{ logo_uri }}" alt=""></div>
         <div class="name">{{ g.nombre }}</div>
       </div>
       <div class="members">Grupo · {{ g.miembros }} miembros</div>
@@ -999,23 +2073,27 @@
 </section>
 
 {# ============================================================ Slide - Web #}
-<section class="slide">
+<section class="slide slide--web-metrics">
   <h2 class="title-lg">Web</h2>
   <div class="subtitle">{{ d.mes_label }} · Search Console</div>
   <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
 
-  <div style="margin-top: 30px;">
+  <div class="web-stack-top" style="margin-top: 12px;">
+  <div>
     <div class="kpi-badge">KPI principal</div>
     <div class="hero-kpi">
       <div class="left">
         <div class="label">Clics en buscador</div>
         <div class="value">{{ fmt_num(d.web.search_console.clics) }}</div>
-        <div class="delta up">▲ {{ d.web.search_console.clics_var_pct }}% vs {{ d.mes_anterior_label }}</div>
+        <div class="delta {% if d.web.search_console.clics_var_pct > 0 %}up{% elif d.web.search_console.clics_var_pct < 0 %}down{% else %}flat{% endif %}">
+          {% if d.web.search_console.clics_var_pct > 0 %}▲{% elif d.web.search_console.clics_var_pct < 0 %}▼{% else %}▸{% endif %}
+          {{ d.web.search_console.clics_var_pct|abs }}% vs {{ d.mes_anterior_label }}
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="web-kpis" style="margin-top: 24px;">
+  <div class="web-kpis" style="margin-top: 10px;">
     <div class="web-kpi k1">
       <div class="l">Clics totales semana</div>
       <div class="v">{{ fmt_num(d.web.resumen_semanal.clics_totales) }}</div>
@@ -1029,9 +2107,26 @@
       <div class="v">{{ d.web.resumen_semanal.posicion_media }}</div>
     </div>
   </div>
+  </div>
 
-  <div class="web-list">
-    <h3 style="font-size: 22px; color: var(--verde-cmp-osc); margin-bottom: 12px;">Tu contenido — top URLs</h3>
+  {% if d.web.nota_contenido %}
+  <div class="gloss-intro" style="margin-top: 12px; border-left-color: #f59e0b; font-size: 16px; padding: 12px 14px;">
+    {{ d.web.nota_contenido }}
+  </div>
+  {% endif %}
+
+  {% if not capturas.web_contenido %}
+  <div class="gloss-intro" style="margin-top: 10px; border-left-color: #94a3b8; font-size: 15px; padding: 12px 14px;">
+    <strong>Misma fuente — Search Console:</strong> las capturas de <strong>Rendimiento</strong> y, si aplica, <strong>Tu contenido</strong> van en la diapositiva siguiente.
+    La tabla <strong>«Tu contenido — top URLs»</strong> de abajo también sale de Search Console (páginas con más clics).
+    Si querés sumar una captura de esa vista en el PDF, subila como
+    <code style="font-size:14px;">06_web_contenido.jpg</code> en <code style="font-size:14px;">capturas/</code> (menú <strong>«Tu contenido»</strong> en el panel izquierdo).
+  </div>
+  {% endif %}
+
+  {% if d.web.contenido_top and d.web.contenido_top|length > 0 %}
+  <div class="web-list web-list--fit" style="margin-top: 12px; max-height: 380px;">
+    <h3 style="font-size: 17px; color: var(--verde-cmp-osc); margin-bottom: 6px;">Tu contenido — top URLs</h3>
     {% for c in d.web.contenido_top %}
     <div class="item">
       <div>
@@ -1049,7 +2144,54 @@
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <div class="gloss-intro" style="margin-top: 12px; border-left-color: #64748b; font-size: 15px; padding: 12px 14px;">
+    <strong>Tabla «Tu contenido»:</strong> este mes no hay filas cargadas en <code style="font-size:14px;">datos.yaml</code>
+    (o la lista está vacía). Suele deberse a que falta la captura
+    <code style="font-size:14px;">06_web_contenido</code> para leer clics por URL.
+    El KPI de clics y las capturas de Rendimiento arriba siguen siendo válidos.
+  </div>
+  {% endif %}
 </section>
+
+{% set web_sc = capturas.web_searchconsole_anterior or capturas.web_searchconsole_actual %}
+{% if web_sc or capturas.web_contenido %}
+<section class="slide slide--sheet">
+  <div class="logo"><img src="{{ logo_uri }}" alt=""></div>
+  <div class="sheet-ribbon">
+    <h2>Web · capturas</h2>
+    <div class="subtitle"><strong>Google Search Console</strong> — {{ d.mes_anterior_label }} vs {{ d.mes_label }}</div>
+  </div>
+  <div class="sheet-body {% if web_sc and capturas.web_contenido %}sheet-web{% elif capturas.web_contenido and not web_sc %}sheet-body--single{% endif %}">
+    {% if web_sc %}
+    <div class="sheet-cell">
+      <h4>Rendimiento · {{ d.mes_anterior_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.web_searchconsole_anterior %}
+          <img src="{{ capturas.web_searchconsole_anterior }}" alt="">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+    <div class="sheet-cell">
+      <h4>Rendimiento · {{ d.mes_label }}</h4>
+      <div class="sheet-cap">
+        {% if capturas.web_searchconsole_actual %}
+          <img src="{{ capturas.web_searchconsole_actual }}" alt="">
+        {% else %}<div class="placeholder">Sin captura</div>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if capturas.web_contenido %}
+    <div class="sheet-cell {% if web_sc %}sheet-row-full{% endif %}">
+      <h4>Vista «Tu contenido»</h4>
+      <div class="sheet-cap {% if web_sc %}sheet-cap--short{% endif %}">
+        <img src="{{ capturas.web_contenido }}" alt="">
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
 
 {# ============================================================ Slide - Conclusiones #}
 <section class="slide">

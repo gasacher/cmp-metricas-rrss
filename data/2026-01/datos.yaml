@@ -120,14 +120,15 @@ luciana:
       guardados: 0
       envios: 0
       visitas_enlace: 3
+    # Panel «Interacción» mes actual (captura 09_luciana_interaccion_actual.png).
     actual:
-      sociales_total: 7   # 4+3+0 de los top posts; ajustar si hay total real
-      reacciones: 0       # no se publicó captura del bloque "Interacción" de enero
-      comentarios: 0
+      sociales_total: 103
+      reacciones: 98
+      comentarios: 5
       compartidos: 0
       guardados: 0
       envios: 0
-      visitas_enlace: 0
+      visitas_enlace: 3
   publicaciones_top:
     - { texto: "Gracias a Fortuna por invitarme a compartir una mirada sobre el ecosistema de medios de pago", interacciones: 4 }
     - { texto: "Gran cierre de año junto a la comunidad de la Cámara de Medios de Pago", interacciones: 3 }
@@ -137,6 +138,9 @@ luciana:
 # Slide - WhatsApp (mismo que diciembre)
 # -----------------------------------------------------------------------------
 whatsapp:
+  nota_mes: >
+    Sin actualización de datos de grupos este mes (contacto de la Cámara en
+    vacaciones). Se muestran los últimos valores disponibles.
   grupos:
     - { nombre: "Regulación, Cumplimiento y Defensa del Consumidor", miembros: 39 }
     - { nombre: "Asuntos Públicos y Relaciones Institucionales",     miembros: 28 }
@@ -155,8 +159,16 @@ web:
   search_console:
     clics: 75
     clics_var_pct: 32      # 75 vs 57
+  nota_contenido: >
+    La tabla siguiente resume clics por URL según el último informe completo
+    disponible; al recibir la captura «Tu contenido» del mes (06_web_contenido)
+    se puede ajustar cifras y variaciones.
   contenido_top:
-    - { titulo: "[Pendiente — captura de Search Console > Tu contenido]", url: "", clics: 0, var_pct: null }
+    - { titulo: "Cámara de Medios de Pago - Página principal", url: "https://camarademediosdepago.ar/",                       var_pct: 24,  clics: 52 }
+    - { titulo: "Miembros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/miembros/",              var_pct: 150, clics: 5 }
+    - { titulo: "Nosotros - Cámara de Medios de Pago",         url: "https://camarademediosdepago.ar/nosotros/",              var_pct: -29, clics: 5 }
+    - { titulo: "Actividades e Iniciativas",                   url: "https://camarademediosdepago.ar/actividadeseiniciativas/", var_pct: null, clics: 2, nota: "Anteriormente: 0" }
+    - { titulo: "Sala de Prensa",                              url: "https://camarademediosdepago.ar/saladeprensa/",          var_pct: null, clics: 1, nota: "Anteriormente: 0" }
 
 conclusiones: []
 oportunidades: []
